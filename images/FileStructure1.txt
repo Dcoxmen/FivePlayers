@@ -1,0 +1,21 @@
+Root/
+     server.js
+	 package.json
+	 gitignore
+	 ReadMe
+	 
+	 clientFolder/
+	             publicFolder/index.html
+				 srcFolder/App.js, App.css, index.js, 
+				           componentsFolder/
+						   imgFolder/
+						   validationFolder/		 
+				 
+	 configFolder/keys.js, keys_prod.js, passport
+	 
+	 modelsFolder/Post.js, Profile.js, User.js
+	 
+	 routesFolder/api/posts.js, profile.js, users.js
+	 
+	 validationFolder/experience.js, games.js, login.js, post.js, profile.js, register.js
+	 
