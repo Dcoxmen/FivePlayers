@@ -32,7 +32,7 @@
             this.land = null;
             this.emitter = null;
 
-            this.power = 300;
+            this.power = 0;
             this.powerText = null;
 
             this.cursors = null;
@@ -123,8 +123,8 @@
                 this.flame.visible = false;
 
                 //  Used to display the power of the shot
-                this.power = 300;
-                this.powerText = this.add.text(8, 8, 'Power: 300', { font: "18px Arial", fill: "#ffffff" });
+                this.power = 0;
+                this.powerText = this.add.text(8, 8, 'Power: 0', { font: "18px Arial", fill: "#ffffff" });
                 this.powerText.setShadow(1, 1, 'rgba(0, 0, 0, 0.8)', 1);
                 this.powerText.fixedToCamera = true;
 
@@ -132,8 +132,16 @@
                 this.cursors = this.input.keyboard.createCursorKeys();
 
                 this.fireButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-                this.fireButton.onDown.add(this.fire, this);
 
+            },
+
+                        /**
+             * Called by update when fire button (SPACEBAR) is held down.
+             * 
+             * @method chargeUp
+             */
+             chargeUp: function () {
+                this.power += 5;
             },
 
             /**
@@ -199,7 +207,7 @@
 
                 //  Our launch trajectory is based on the angle of the turret and the power
                 this.physics.arcade.velocityFromRotation(this.turret.rotation, this.power, this.bullet.body.velocity);
-
+                this.power = 0;
             },
 
             /**
@@ -279,6 +287,15 @@
                         if (this.turret.angle > -90) {
                             this.tank.scale.x = 1;
                         }
+                    }
+
+                    // add Spacebar as firebutton
+                    this.fireButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+                    // run fire function when spacebar is let go
+                    this.fireButton.onUp.add(this.fire, this);
+                    // charge up power when space bar is held down
+                    if (this.fireButton.isDown) {
+                        this.chargeUp();
                     }
 
                     //  Update the text
