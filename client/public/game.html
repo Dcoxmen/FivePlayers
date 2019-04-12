@@ -35,12 +35,13 @@
             this.HealthBar = null;
 
             this.power = 0;
-            this.maxPower = 700;
+            this.maxPower = 600;
             this.powerText = null;
 
             this.cursors = null;
             this.fireButton = null;
-
+            this.cameraLeft = null;
+            this.cameraRight = null;
         };
 
         PhaserGame.prototype = {
@@ -142,8 +143,9 @@
 
                 //  Some basic controls
                 this.cursors = this.input.keyboard.createCursorKeys();
-
                 this.fireButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+                this.cameraLeft = this.input.keyboard.addKey(Phaser.Keyboard.COMMA);
+                this.cameraRight = this.input.keyboard.addKey(Phaser.Keyboard.PERIOD);
 
             },
 
@@ -280,13 +282,13 @@
                     this.bulletVsLand();
                 }
                 else {
-                    //  Allow them to set the power between 100 and 600
-                    if (this.cursors.down.isDown && this.power > 100) {
-                        // this.power -= 2;
-                    }
-                    else if (this.cursors.up.isDown && this.power < 600) {
-                        // this.power += 2;
-                    }
+                    // //  Allow them to set the power between 100 and 600
+                    // if (this.cursors.down.isDown && this.power > 100) {
+                    //     // this.power -= 2;
+                    // }
+                    // else if (this.cursors.up.isDown && this.power < 600) {
+                    //     // this.power += 2;
+                    // }
 
                     //  Allow them to set the angle, between -90 (straight up) and 0 (facing to the right)
                     if (this.cursors.left.isDown && this.turret.angle > -165) {
@@ -302,12 +304,21 @@
                         }
                     }
 
-                    // add Spacebar as firebutton
-                    // this.fireButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+                    //  Move camera
+                    if (this.cameraLeft.isDown && this.camera.x > 0) {
+                        this.camera.x -= 10;
+                    }
+                    else if (this.cameraRight.isDown && this.camera.x < 1920) {
+                        this.camera.x += 10;
+                    }
+
                     // run fire function when spacebar is let go
                     this.fireButton.onUp.add(this.fire, this);
+
                     // charge up power when space bar is held down
                     if (this.fireButton.isDown) {
+                        // reset the camera position
+                        this.camera.x -= this.camera.x;
                         this.HealthBar.setPercent((this.power / this.maxPower) * 100);
                         if (this.power <= this.maxPower+100) {
                             this.chargeUp();
