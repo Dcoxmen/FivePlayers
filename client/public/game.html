@@ -124,10 +124,10 @@
                 this.tank.anchor.set(.5, .5);
 
                 // Health bar
-                var barConfig = { x: this.turret.x, y: this.turret.y - 50, width: 70, height: 10 }
+                var barConfig = { x: this.turret.x, y: this.turret.y - 50, width: 70, height: 10, animationDuration: 100 }
                 this.HealthBar = new HealthBar(this.game, barConfig);
                 this.HealthBar.setPercent(0);
-            
+
 
                 //  When we shoot this little flame sprite will appear briefly at the end of the turret
                 this.flame = this.add.sprite(0, 0, 'flame');
@@ -282,10 +282,10 @@
                 else {
                     //  Allow them to set the power between 100 and 600
                     if (this.cursors.down.isDown && this.power > 100) {
-                        this.power -= 2;
+                        // this.power -= 2;
                     }
                     else if (this.cursors.up.isDown && this.power < 600) {
-                        this.power += 2;
+                        // this.power += 2;
                     }
 
                     //  Allow them to set the angle, between -90 (straight up) and 0 (facing to the right)
@@ -308,8 +308,14 @@
                     this.fireButton.onUp.add(this.fire, this);
                     // charge up power when space bar is held down
                     if (this.fireButton.isDown) {
-                        this.chargeUp();
-                        this.HealthBar.setPercent((this.power/this.maxPower)*100);
+                        this.HealthBar.setPercent((this.power / this.maxPower) * 100);
+                        if (this.power <= this.maxPower+100) {
+                            this.chargeUp();
+                        }
+                        else {
+                            this.fire();
+                        }
+                        
                     }
 
                     //  Update the text
