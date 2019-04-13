@@ -16,15 +16,19 @@
 
     <div id="game"></div>
 
-    <script src="./assets/phaser.healthbar/HealthBar.standalone.js"></script>
+    <script src="./assets/javascript/HealthBar.standalone.js"></script>
     <script type="text/javascript">
 
         var game = new Phaser.Game(960, 480, Phaser.CANVAS, 'game');
 
         var PhaserGame = function (game) {
 
-            this.tank = null;
-            this.turret = null;
+            this.turret = [];
+            this.tank = [];
+            this.tankX = [64, 990, 1817];
+            this.tankY = [402, 84, 337];
+
+            this.gameState = 0;
             this.flame = null;
             this.bullet = null;
 
@@ -32,7 +36,7 @@
             this.targets = null;
             this.land = null;
             this.emitter = null;
-            this.HealthBar = null;
+            this.powerBar = [];
 
             this.power = 0;
             this.maxPower = 600;
@@ -47,29 +51,26 @@
         PhaserGame.prototype = {
 
             init: function () {
-
                 this.game.renderer.renderSession.roundPixels = true;
 
                 this.game.world.setBounds(0, 0, 1920, 480);
 
                 this.physics.startSystem(Phaser.Physics.ARCADE);
                 this.physics.arcade.gravity.y = 200;
-
             },
 
             preload: function () {
 
-                //  Remove the next 2 lines if running locally
-                // this.load.baseURL = 'http://files.phaser.io.s3.amazonaws.com/codingtips/issue002/';
-                // this.load.crossOrigin = 'anonymous';
+                this.load.image('bullet', './assets/image/bullet.png');
+                this.load.image('background', './assets/image/background.png');
+                this.load.image('flame', './assets/image/flame.png');
+                this.load.image('target', './assets/image/target.png');
+                this.load.image('land', './assets/image/land.png');
 
-                this.load.image('tank', 'assets/tank.png');
-                this.load.image('turret', 'assets/turret.png');
-                this.load.image('bullet', 'assets/bullet.png');
-                this.load.image('background', 'assets/background.png');
-                this.load.image('flame', 'assets/flame.png');
-                this.load.image('target', 'assets/target.png');
-                this.load.image('land', 'assets/land.png');
+                for (i = 0; i < this.tankX.length; i++) {
+                    this.load.image('tank' + i, './assets/image/tank.png');
+                    this.load.image('turret' + i, './assets/image/turret.png');
+                }
 
                 //  Note: Graphics from Amiga Tanx Copyright 1991 Gary Roberts
 
@@ -81,19 +82,17 @@
                 //  Simple but pretty background
                 this.background = this.add.sprite(0, 0, 'background');
 
+                // //  The targets to hit (hidden behind the land slightly)
+                // this.targets = this.add.group(this.game.world, 'targets', false, true, Phaser.Physics.ARCADE);
 
+                // this.targets.create(284, 378, 'target');
+                // this.targets.create(456, 153, 'target');
+                // this.targets.create(545, 305, 'target');
+                // this.targets.create(726, 391, 'target');
+                // this.targets.create(972, 74, 'target');
 
-                //  The targets to hit (hidden behind the land slightly)
-                this.targets = this.add.group(this.game.world, 'targets', false, true, Phaser.Physics.ARCADE);
-
-                this.targets.create(284, 378, 'target');
-                this.targets.create(456, 153, 'target');
-                this.targets.create(545, 305, 'target');
-                this.targets.create(726, 391, 'target');
-                this.targets.create(972, 74, 'target');
-
-                //  Stop gravity from pulling them away
-                this.targets.setAll('body.allowGravity', false);
+                // //  Stop gravity from pulling them away
+                // this.targets.setAll('body.allowGravity', false);
 
                 //  The land is a BitmapData the size of the game world
                 //  We draw the 'lang.png' to it then add it to the world
@@ -110,25 +109,14 @@
                 this.emitter.setYSpeed(-100, -200);
                 this.emitter.setRotation();
 
+                for (var i = 0; i < this.tankX.length; i++) {
+                    this.createPlayer(this.tankX[i], this.tankY[i], i);
+                }
+
                 //  A single bullet that the tank will fire
                 this.bullet = this.add.sprite(0, 0, 'bullet');
                 this.bullet.exists = false;
                 this.physics.arcade.enable(this.bullet);
-
-                //  The turret which we rotate (offset 30x14 from the tank)
-                this.turret = this.add.sprite(64, 401, 'turret');
-                this.turret.anchor.set(-.9, .8);
-                this.turret.angle = -20;
-
-                //  The body of the tank
-                this.tank = this.add.sprite(this.turret.x, this.turret.y, 'tank');
-                this.tank.anchor.set(.5, .5);
-
-                // Health bar
-                var barConfig = { x: this.turret.x, y: this.turret.y - 50, width: 70, height: 10, animationDuration: 100 }
-                this.HealthBar = new HealthBar(this.game, barConfig);
-                this.HealthBar.setPercent(0);
-
 
                 //  When we shoot this little flame sprite will appear briefly at the end of the turret
                 this.flame = this.add.sprite(0, 0, 'flame');
@@ -149,13 +137,27 @@
 
             },
 
-            /**
- * Called by update when fire button (SPACEBAR) is held down.
- * 
- * @method chargeUp
- */
-            chargeUp: function () {
-                this.power += 5;
+            createPlayer: function (x, y, i) {
+                //  The turret which we rotate (offset 30x14 from the tank)
+                this.turret[i] = this.add.sprite(x, y, 'turret' + i);
+                this.turret[i].anchor.set(-.9, .8);
+
+                //  The body of the tank
+                this.tank[i] = this.add.sprite(this.turret[i].x, this.turret[i].y, 'tank' + i);
+                this.tank[i].anchor.set(.5, .5);
+
+                if (i < this.tankX.length / 2) {
+                    this.turret[i].angle = -20;
+                } else {
+                    // Flip the tank for player# 3~5
+                    this.turret[i].angle = -160;
+                    this.tank[i].scale.x = -1;
+                }
+
+                // Power bar
+                var barConfig = { x: this.turret[i].x, y: this.turret[i].y - 33, width: 50, height: 5, animationDuration: 100 }
+                this.powerBar[i] = new HealthBar(this.game, barConfig);
+                this.powerBar[i].setPercent(0);
             },
 
             /**
@@ -201,11 +203,11 @@
                 }
 
                 //  Re-position the bullet where the turret is
-                this.bullet.reset(this.turret.x, this.turret.y);
+                this.bullet.reset(this.turret[this.gameState].x, this.turret[this.gameState].y);
 
                 //  Now work out where the END of the turret is
-                var p = new Phaser.Point(this.turret.x, this.turret.y);
-                p.rotate(p.x, p.y, this.turret.rotation, false, 34);
+                var p = new Phaser.Point(this.turret[this.gameState].x, this.turret[this.gameState].y);
+                p.rotate(p.x, p.y, this.turret[this.gameState].rotation, false, 34);
 
                 //  And position the flame sprite there
                 this.flame.x = p.x;
@@ -220,9 +222,11 @@
                 this.camera.follow(this.bullet);
 
                 //  Our launch trajectory is based on the angle of the turret and the power
-                this.physics.arcade.velocityFromRotation(this.turret.rotation, this.power, this.bullet.body.velocity);
+                this.physics.arcade.velocityFromRotation(this.turret[this.gameState].rotation, this.power, this.bullet.body.velocity);
                 this.power = 0;
-                this.HealthBar.setPercent(0);
+                this.powerBar[this.gameState].setPercent(0);
+
+                
             },
 
             /**
@@ -240,7 +244,6 @@
                 target.kill();
 
                 this.removeBullet(true);
-
             },
 
             /**
@@ -291,16 +294,16 @@
                     // }
 
                     //  Allow them to set the angle, between -90 (straight up) and 0 (facing to the right)
-                    if (this.cursors.left.isDown && this.turret.angle > -165) {
-                        this.turret.angle--;
-                        if (this.turret.angle < -90) {
-                            this.tank.scale.x = -1;
+                    if (this.cursors.left.isDown && this.turret[this.gameState].angle > -165) {
+                        this.turret[this.gameState].angle--;
+                        if (this.turret[this.gameState].angle < -90) {
+                            this.tank[this.gameState].scale.x = -1;
                         }
                     }
-                    else if (this.cursors.right.isDown && this.turret.angle < -15) {
-                        this.turret.angle++;
-                        if (this.turret.angle > -90) {
-                            this.tank.scale.x = 1;
+                    else if (this.cursors.right.isDown && this.turret[this.gameState].angle < -15) {
+                        this.turret[this.gameState].angle++;
+                        if (this.turret[this.gameState].angle > -90) {
+                            this.tank[this.gameState].scale.x = 1;
                         }
                     }
 
@@ -318,21 +321,20 @@
                     // charge up power when space bar is held down
                     if (this.fireButton.isDown) {
                         // reset the camera position
-                        this.camera.x -= this.camera.x;
-                        this.HealthBar.setPercent((this.power / this.maxPower) * 100);
-                        if (this.power <= this.maxPower+100) {
-                            this.chargeUp();
+                        this.camera.follow(this.tank[this.gameState]);
+
+                        this.powerBar[this.gameState].setPercent((this.power / this.maxPower) * 100);
+                        if (this.power <= this.maxPower + 100) {
+                            this.power += 5;
                         }
                         else {
                             this.fire();
                         }
-                        
                     }
 
                     //  Update the text
                     this.powerText.text = 'Power: ' + this.power;
                 }
-
             }
 
         };
