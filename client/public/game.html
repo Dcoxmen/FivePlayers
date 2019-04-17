@@ -23,6 +23,7 @@
 
         var PhaserGame = function (game) {
 
+            this.parent = [];
             this.turret = [];
             this.tank = [];
             this.tankX = [64, 990, 1817];
@@ -138,13 +139,17 @@
             },
 
             createPlayer: function (x, y, i) {
+                this.parent[i] =  this.add.sprite(x, y, '');
                 //  The turret which we rotate (offset 30x14 from the tank)
-                this.turret[i] = this.add.sprite(x, y, 'turret' + i);
+                this.turret[i] = this.add.sprite(0, 0, 'turret' + i);
                 this.turret[i].anchor.set(-.9, .8);
+                console.log(this.turret[i]);
+                this.parent[i].addChild(this.turret[i]);
 
                 //  The body of the tank
                 this.tank[i] = this.add.sprite(this.turret[i].x, this.turret[i].y, 'tank' + i);
                 this.tank[i].anchor.set(.5, .5);
+                this.parent[i].addChild(this.tank[i]);
 
                 if (i < this.tankX.length / 2) {
                     this.turret[i].angle = -20;
@@ -155,9 +160,10 @@
                 }
 
                 // Power bar
-                var barConfig = { x: this.turret[i].x, y: this.turret[i].y - 33, width: 50, height: 5, animationDuration: 100 }
+                var barConfig = { x: x, y: y - 33, width: 50, height: 5, animationDuration: 100 }
                 this.powerBar[i] = new HealthBar(this.game, barConfig);
                 this.powerBar[i].setPercent(0);
+                
             },
 
             /**
@@ -203,7 +209,7 @@
                 }
 
                 //  Re-position the bullet where the turret is
-                this.bullet.reset(this.turret[this.gameState].x, this.turret[this.gameState].y);
+                this.bullet.reset(this.parent[this.gameState].x, this.parent[this.gameState].y);
 
                 //  Now work out where the END of the turret is
                 var p = new Phaser.Point(this.turret[this.gameState].x, this.turret[this.gameState].y);
