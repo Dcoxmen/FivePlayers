@@ -73,8 +73,6 @@
                     this.load.image('turret' + i, './assets/image/turret.png');
                 }
 
-                //  Note: Graphics from Amiga Tanx Copyright 1991 Gary Roberts
-
             },
 
             create: function () {
@@ -139,7 +137,7 @@
             },
 
             createPlayer: function (x, y, i) {
-                this.parent[i] =  this.add.sprite(x, y, '');
+                this.parent[i] = this.add.sprite(x, y, '');
                 //  The turret which we rotate (offset 30x14 from the tank)
                 this.turret[i] = this.add.sprite(0, 0, 'turret' + i);
                 this.turret[i].anchor.set(-.9, .8);
@@ -163,7 +161,7 @@
                 var barConfig = { x: x, y: y - 33, width: 50, height: 5, animationDuration: 100 }
                 this.powerBar[i] = new HealthBar(this.game, barConfig);
                 this.powerBar[i].setPercent(0);
-                
+
             },
 
             /**
@@ -232,7 +230,10 @@
                 this.power = 0;
                 this.powerBar[this.gameState].setPercent(0);
 
-                
+                this.gameState++;
+                if (this.gameState == this.tankX.length) {
+                    this.gameState = 0;
+                };
             },
 
             /**
@@ -271,7 +272,7 @@
                     delay = 2000;
                 }
 
-                this.add.tween(this.camera).to({ x: 0 }, 1000, "Quint", true, delay);
+                this.add.tween(this.camera).to({ x: this.tankX[this.gameState]-480 }, 1000, "Quint", true, delay);
 
             },
 
@@ -301,12 +302,16 @@
 
                     //  Allow them to set the angle, between -90 (straight up) and 0 (facing to the right)
                     if (this.cursors.left.isDown && this.turret[this.gameState].angle > -165) {
+
+                        this.camera.follow(this.tank[this.gameState]);
                         this.turret[this.gameState].angle--;
                         if (this.turret[this.gameState].angle < -90) {
                             this.tank[this.gameState].scale.x = -1;
                         }
                     }
                     else if (this.cursors.right.isDown && this.turret[this.gameState].angle < -15) {
+
+                        this.camera.follow(this.tank[this.gameState]);
                         this.turret[this.gameState].angle++;
                         if (this.turret[this.gameState].angle > -90) {
                             this.tank[this.gameState].scale.x = 1;
@@ -315,9 +320,11 @@
 
                     //  Move camera
                     if (this.cameraLeft.isDown && this.camera.x > 0) {
+                        this.camera.follow();
                         this.camera.x -= 10;
                     }
                     else if (this.cameraRight.isDown && this.camera.x < 1920) {
+                        this.camera.follow();
                         this.camera.x += 10;
                     }
 
