@@ -4,20 +4,55 @@
 <head>
     <title>Tanks - Part 2</title>
     <meta charset="utf-8">
-    <script src="https://cdn.jsdelivr.net/npm/phaser-ce@2.12.0"></script>
-    <!-- <style>
-        /* canvas {
-
-        } */
-        </style> -->
 </head>
 
 <body>
 
     <div id="game"></div>
+    <br><div id="test"></div>
 
+    <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser-ce@2.12.0"></script>
     <script src="./assets/javascript/HealthBar.standalone.js"></script>
     <script type="text/javascript">
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyA5CFv7t0pEufxGHpBMdo5g25qaiXU9JdQ",
+            authDomain: "mern-fury.firebaseapp.com",
+            databaseURL: "https://mern-fury.firebaseio.com",
+            projectId: "mern-fury",
+            storageBucket: "mern-fury.appspot.com",
+            messagingSenderId: "129302449232"
+        };
+        firebase.initializeApp(config);
+
+        // Create a variable to reference the database.
+        var database = firebase.database();
+
+        var userAngle = 0;
+        var userPower = 0;
+        var userInput = 0;
+        var output = $("#test");
+
+        // Firebase watcher + initial loader
+        database.ref().on("value", function (snapshot) {
+            if (snapshot.exists()) {
+                // storing the snapshot.val() in a variable for convenience
+                userAngle = snapshot.val().angle;
+                userPower = snapshot.val().power;
+                userInput = snapshot.val().direction;
+            };
+
+            output.html("Angle : " + userAngle);
+            // output.append("<br>beta : " + userPower);
+            output.append("<br>Camera : " + userInput);
+
+            // Handle the errors
+        }, function (errorObject) {
+            console.log("Errors handled: " + errorObject.code);
+        });
 
         var game = new Phaser.Game(960, 480, Phaser.CANVAS, 'game');
 
@@ -26,8 +61,8 @@
             this.parent = [];
             this.turret = [];
             this.tank = [];
-            this.tankX = [64, 990, 1817];
-            this.tankY = [402, 84, 337];
+            this.tankX = [64, 465, 990, 1348, 1817];
+            this.tankY = [402, 166, 84, 338, 337];
 
             this.gameState = 0;
             this.flame = null;
@@ -141,7 +176,7 @@
                 //  The turret which we rotate (offset 30x14 from the tank)
                 this.turret[i] = this.add.sprite(0, 0, 'turret' + i);
                 this.turret[i].anchor.set(-.9, .8);
-                console.log(this.turret[i]);
+                // console.log(this.turret[i]);
                 this.parent[i].addChild(this.turret[i]);
 
                 //  The body of the tank
@@ -272,7 +307,7 @@
                     delay = 2000;
                 }
 
-                this.add.tween(this.camera).to({ x: this.tankX[this.gameState]-480 }, 1000, "Quint", true, delay);
+                this.add.tween(this.camera).to({ x: this.tankX[this.gameState] - 480 }, 1000, "Quint", true, delay);
 
             },
 
@@ -301,7 +336,7 @@
                     // }
 
                     //  Allow them to set the angle, between -90 (straight up) and 0 (facing to the right)
-                    if (this.cursors.left.isDown && this.turret[this.gameState].angle > -165) {
+                    if ((userAngle === -1 || this.cursors.left.isDown) && this.turret[this.gameState].angle > -165) {
 
                         this.camera.follow(this.tank[this.gameState]);
                         this.turret[this.gameState].angle--;
@@ -309,7 +344,7 @@
                             this.tank[this.gameState].scale.x = -1;
                         }
                     }
-                    else if (this.cursors.right.isDown && this.turret[this.gameState].angle < -15) {
+                    else if ((userAngle === 1 || this.cursors.right.isDown) && this.turret[this.gameState].angle < -15) {
 
                         this.camera.follow(this.tank[this.gameState]);
                         this.turret[this.gameState].angle++;
@@ -319,11 +354,11 @@
                     }
 
                     //  Move camera
-                    if (this.cameraLeft.isDown && this.camera.x > 0) {
+                    if ((userInput === -1 || this.cameraLeft.isDown) && this.camera.x > 0) {
                         this.camera.follow();
                         this.camera.x -= 10;
                     }
-                    else if (this.cameraRight.isDown && this.camera.x < 1920) {
+                    else if ((userInput === 1 || this.cameraRight.isDown) && this.camera.x < 1920) {
                         this.camera.follow();
                         this.camera.x += 10;
                     }
@@ -353,7 +388,6 @@
         };
 
         game.state.add('Game', PhaserGame, true);
-
     </script>
 
 </body>
