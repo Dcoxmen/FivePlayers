@@ -9,7 +9,8 @@
 <body>
 
     <div id="game"></div>
-    <br><div id="test"></div>
+    <br>
+    <div id="test"></div>
 
     <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -45,13 +46,21 @@
                 userInput = snapshot.val().direction;
             };
 
-            output.html("Angle : " + userAngle);
-            // output.append("<br>beta : " + userPower);
+            output.html("Player : " + (snapshot.val().gameState + 1));
+            output.append("<br>Angle : " + userAngle);
             output.append("<br>Camera : " + userInput);
+            output.append("<br>Fire : " + userPower);
 
             // Handle the errors
         }, function (errorObject) {
             console.log("Errors handled: " + errorObject.code);
+        });
+
+        database.ref().set({
+            gameState: 0,
+            angle: 0,
+            power: 0,
+            direction: 0
         });
 
         var game = new Phaser.Game(960, 480, Phaser.CANVAS, 'game');
@@ -269,6 +278,13 @@
                 if (this.gameState == this.tankX.length) {
                     this.gameState = 0;
                 };
+
+                database.ref().set({
+                    gameState: this.gameState,
+                    angle: 0,
+                    power: 0,
+                    direction: 0
+                });
             },
 
             /**
@@ -364,10 +380,12 @@
                     }
 
                     // run fire function when spacebar is let go
-                    this.fireButton.onUp.add(this.fire, this);
+                    if (userPower === 0 && this.fireButton.isUp && this.power != 0) {
+                        this.fire();
+                    };
 
                     // charge up power when space bar is held down
-                    if (this.fireButton.isDown) {
+                    if (userPower === 1 || this.fireButton.isDown) {
                         // reset the camera position
                         this.camera.follow(this.tank[this.gameState]);
 
