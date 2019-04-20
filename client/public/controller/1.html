@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Player 1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <center>
+        <div class="controller">
+            <button id="angleLeft" class="btn-floating btn-large waves-effect waves-light black">
+                <i class="material-icons">undo</i></button>
+            <button id="angleRight" class="btn-floating btn-large waves-effect waves-light black">
+                <i class="material-icons">redo</i></button>
+            <button id="cameraLeft" class="btn-large waves-effect waves-light grey darken-1">
+                <i class="material-icons">fast_rewind</i></button>
+            <button id="cameraRight" class="btn-large waves-effect waves-light grey darken-1">
+                <i class="material-icons">fast_forward</i></button>
+            <button id="fireButton" class="btn-floating btn-large waves-effect waves-light red">
+                <i class="material-icons fireIcon" style="font-size: 50px; margin: 25px 0 0 1px;">flash_on</i></button>
+            <div id="output"></div>
+        </div>
+    </center>
+
+    <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $("body").on("contextmenu", function (e) {
+                return false;
+            });
+
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyA5CFv7t0pEufxGHpBMdo5g25qaiXU9JdQ",
+                authDomain: "mern-fury.firebaseapp.com",
+                databaseURL: "https://mern-fury.firebaseio.com",
+                projectId: "mern-fury",
+                storageBucket: "mern-fury.appspot.com",
+                messagingSenderId: "129302449232"
+            };
+            firebase.initializeApp(config);
+
+            // Create a variable to reference the database.
+            var database = firebase.database();
+
+            var gameState = 0;
+            var fireBtn = 0;
+            var angleBtn = 0;
+            var userAngle = 0;
+            var userInput = 0;
+            var userPower = 0;
+
+            var userNo = 1;
+
+            // Firebase watcher + initial loader
+            database.ref().on("value", function (snapshot) {
+                if (snapshot.exists()) {
+                    // storing the snapshot.val() in a variable for convenience
+                    gameState = snapshot.val().gameState;
+                    userAngle = snapshot.val().angle;
+                    userInput = snapshot.val().direction;
+                    userPower = snapshot.val().power;
+                };
+                // Handle the errors
+            }, function (errorObject) {
+                console.log("Errors handled: " + errorObject.code);
+            });
+
+            var output = $("#output");
+
+            window.addEventListener('deviceorientation', (event) => {
+                // var alpha = event.alpha;
+                var beta = event.beta;
+                // var gamma = event.gamma;
+
+                if (beta < -20 || angleBtn === -1) {
+                    userAngle = -1;
+                } else if (beta > 20 | angleBtn === 1) {
+                    userAngle = 1;
+                } else {
+                    userAngle = 0;
+                }
+
+                output.html("Player : " + (gameState + 1));
+                output.append("<br>Angle : " + userAngle);
+                output.append("<br>Camera : " + userInput);
+                output.append("<br>Fire : " + userPower);
+                // output.append("<br><br>alpha : " + alpha);
+                // output.append("<br>beta : " + beta);
+                // output.append("<br>gamma : " + gamma);
+
+                // Code for "Setting values in the database"
+                if (userNo === (gameState + 1)) {
+                    database.ref().set({
+                        gameState: gameState,
+                        angle: userAngle,
+                        power: userPower,
+                        direction: userInput
+                    });
+                }
+            });
+
+            $("#angleLeft")
+                .on('touchstart mousedown', function () {
+                    angleBtn = -1;
+                })
+                .mouseup(function () {
+                    angleBtn = 0;
+                });
+
+            $("#angleRight")
+                .on('touchstart mousedown', function () {
+                    angleBtn = 1;
+                })
+                .mouseup(function () {
+                    angleBtn = 0;
+                });
+
+            $("#cameraLeft")
+                .on('touchstart mousedown', function () {
+                    userInput = -1;
+                })
+                .mouseup(function () {
+                    userInput = 0;
+                });
+
+            $("#cameraRight")
+                .on('touchstart mousedown', function () {
+                    userInput = 1;
+                })
+                .mouseup(function () {
+                    userInput = 0;
+                });
+
+            $("#fireButton")
+                .on('touchstart mousedown', function () {
+                    userPower = 1;
+                    fireBtn = 1;
+                })
+                .mouseup(function () {
+                    userPower = 0;
+                    if (fireBtn === 1 && (userNo === gameState + 1)) {
+                        fireBtn = 0;
+                        gameState = userNo;
+                        database.ref().set({
+                            gameState: userNo,
+                            angle: userAngle,
+                            power: userPower,
+                            direction: userInput
+                        });
+                    }
+                });
+        });
+    </script>
+</body>
+
+</html>
