@@ -88,15 +88,17 @@
             this.powerText = null;
 
             this.cursors = null;
-            this.fireButton = null;
             this.cameraLeft = null;
             this.cameraRight = null;
+            this.fireButton = null;
+            this.fireCheck = false;
         };
 
         PhaserGame.prototype = {
 
             init: function () {
                 this.game.renderer.renderSession.roundPixels = true;
+                // this.game.state.disableVisibilityChange = true;
 
                 this.game.world.setBounds(0, 0, 1920, 480);
 
@@ -273,6 +275,7 @@
                 this.physics.arcade.velocityFromRotation(this.turret[this.gameState].rotation, this.power, this.bullet.body.velocity);
                 this.power = 0;
                 this.powerBar[this.gameState].setPercent(0);
+                this.fireCheck = false;
 
                 this.gameState++;
                 if (this.gameState == this.tankX.length) {
@@ -380,12 +383,12 @@
                     }
 
                     // run fire function when spacebar is let go
-                    if (userPower === 0 && this.fireButton.isUp && this.power != 0) {
+                    if (userPower === 0 && this.fireButton.isUp && this.power != 0  && !this.fireCheck) {
                         this.fire();
                     };
 
                     // charge up power when space bar is held down
-                    if (userPower === 1 || this.fireButton.isDown) {
+                    if ((userPower === 1 || this.fireButton.isDown) && !this.fireCheck) {
                         // reset the camera position
                         this.camera.follow(this.tank[this.gameState]);
 
@@ -394,7 +397,7 @@
                             this.power += 5;
                         }
                         else {
-                            this.fire();
+                            this.power = 0;
                         }
                     }
 

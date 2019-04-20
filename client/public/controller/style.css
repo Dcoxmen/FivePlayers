@@ -55,5 +55,6 @@ position: relative;
 @media screen and (orientation: portrait) {
   html {
     transform: rotate(90deg);
+    height: 100vw;
   }
 }
