@@ -54,7 +54,8 @@
             // Create a variable to reference the database.
             var database = firebase.database();
 
-            var gameState;
+            var gameState = 0;
+            var fireBtn = 0;
             var angleBtn = 0;
             var userAngle = 0;
             var userInput = 0;
@@ -91,7 +92,8 @@
                     userAngle = 0;
                 }
 
-                output.html("Angle : " + userAngle);
+                output.html("Player : " + (gameState + 1));
+                output.append("<br>Angle : " + userAngle);
                 output.append("<br>Camera : " + userInput);
                 output.append("<br>Fire : " + userPower);
                 // output.append("<br><br>alpha : " + alpha);
@@ -99,7 +101,7 @@
                 // output.append("<br>gamma : " + gamma);
 
                 // Code for "Setting values in the database"
-                if (userNo === gameState + 1) {
+                if (userNo === (gameState + 1)) {
                     database.ref().set({
                         gameState: gameState,
                         angle: userAngle,
@@ -144,16 +146,20 @@
             $("#fireButton")
                 .on('touchstart mousedown', function () {
                     userPower = 1;
+                    fireBtn = 1;
                 })
                 .mouseup(function () {
                     userPower = 0;
-                    gameState = userNo;
-                    database.ref().set({
-                        gameState: gameState,
-                        angle: userAngle,
-                        power: userPower,
-                        direction: userInput
-                    });
+                    if (fireBtn === 1 && (userNo === gameState + 1)) {
+                        fireBtn = 0;
+                        gameState = userNo;
+                        database.ref().set({
+                            gameState: userNo,
+                            angle: userAngle,
+                            power: userPower,
+                            direction: userInput
+                        });
+                    }
                 });
         });
     </script>
