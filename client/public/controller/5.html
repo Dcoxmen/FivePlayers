@@ -60,7 +60,7 @@
             var userInput = 0;
             var userPower = 0;
 
-            var userNo = 1;
+            var userNo = 5;
 
             // Firebase watcher + initial loader
             database.ref().on("value", function (snapshot) {
@@ -147,7 +147,7 @@
                 })
                 .mouseup(function () {
                     userPower = 0;
-                    gameState = userNo;
+                    gameState = 0;
                     database.ref().set({
                         gameState: gameState,
                         angle: userAngle,
