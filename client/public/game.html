@@ -89,6 +89,8 @@
             this.fireCheck = false;
 
             this.fireSound;
+            this.explosionSound;
+            this.landSound;
         };
         PhaserGame.prototype = {
             init: function () {
@@ -101,6 +103,8 @@
             },
             preload: function () {
                 this.load.audio('fire', './assets/sound/fire.mp3');
+                this.load.audio('explosion', './assets/sound/explode.mp3');
+                this.load.audio('land', './assets/sound/land.mp3');
 
                 this.load.image('bullet', './assets/image/bullet.png');
                 this.load.image('background', './assets/image/background.png');
@@ -168,6 +172,8 @@
                 this.cameraRight = this.input.keyboard.addKey(Phaser.Keyboard.PERIOD);
 
                 this.fireSound = this.add.audio('fire');
+                this.explosionSound = this.add.audio('explosion');
+                this.landSound = this.add.audio('land');
 
                 //  Being mp3 files these take time to decode, so we can't play them instantly
                 //  Using setDecodedCallback we can be notified when they're ALL ready for use.
@@ -218,7 +224,9 @@
                     //  If you like you could combine the above 4 lines:
                     // this.land.blendDestinationOut().circle(x, y, 16, 'rgba(0, 0, 0, 255').blendReset().update();
                     this.removeBullet();
+                    this.landSound.play();
                 }
+                
             },
             /**
              * Called by fireButton.onDown
@@ -276,6 +284,7 @@
                 this.emitter.explode(2000, 10);
                 targets.kill();
                 this.removeBullet(true);
+                this.explosionSound.play();
             },
             /**
              * Removes the bullet, stops the camera following and tweens the camera back to the tank.
