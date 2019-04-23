@@ -28,7 +28,7 @@
             messagingSenderId: "129302449232"
         };
         firebase.initializeApp(config);
-      
+
         // Create a variable to reference the database.
         var database = firebase.database();
 
@@ -36,7 +36,7 @@
         var userPower = 0;
         var userInput = 0;
         var output = $("#test");
-      
+
         // Firebase watcher + initial loader
         database.ref().on("value", function (snapshot) {
             if (snapshot.exists()) {
@@ -45,24 +45,24 @@
                 userPower = snapshot.val().power;
                 userInput = snapshot.val().direction;
             };
-          
+
             output.html("Player : " + (snapshot.val().gameState + 1));
             output.append("<br>Angle : " + userAngle);
             output.append("<br>Camera : " + userInput);
             output.append("<br>Fire : " + userPower);
-          
+
             // Handle the errors
         }, function (errorObject) {
             console.log("Errors handled: " + errorObject.code);
         });
-      
+
         database.ref().set({
             gameState: 0,
             angle: 0,
             power: 0,
             direction: 0
         });
-      
+
         var game = new Phaser.Game(960, 480, Phaser.CANVAS, 'game');
         var PhaserGame = function (game) {
             this.parent = [];
@@ -93,7 +93,7 @@
                 this.game.renderer.renderSession.roundPixels = true;
                 this.game.world.setBounds(0, 0, 1920, 480);
                 this.game.stage.disableVisibilityChange = true;
-              
+
                 this.physics.startSystem(Phaser.Physics.ARCADE);
                 this.physics.arcade.gravity.y = 200;
             },
@@ -101,7 +101,7 @@
                 this.load.image('bullet', './assets/image/bullet.png');
                 this.load.image('background', './assets/image/background.png');
                 this.load.image('flame', './assets/image/flame.png');
-                this.load.image('target', './assets/image/tank.png');
+                this.load.image('target', './assets/image/target.png');
                 this.load.image('land', './assets/image/land.png');
                 for (i = 0; i < this.tankX.length; i++) {
                     this.load.image('tank' + i, './assets/image/tank.png');
@@ -117,12 +117,13 @@
                 this.targets = this.add.group(this.game.world, 'targets', false, true, Phaser.Physics.ARCADE);
 
                 for (i = 0; i < this.tankX.length; i++) {
-                    this.targets.create(this.tankX[i], this.tankY[i], i);
+                    this.targets.create(this.tankX[i] - 30, this.tankY[i] - 22, 'target');
                 }
+                // console.log(this.targets.children);
 
                 //  Stop gravity from pulling them away
                 this.targets.setAll('body.allowGravity', false);
-                
+
                 //  The land is a BitmapData the size of the game world
                 //  We draw the 'lang.png' to it then add it to the world
                 this.land = this.add.bitmapData(1920, 480);
@@ -164,10 +165,9 @@
             },
             createPlayer: function (x, y, i) {
                 this.parent[i] = this.add.sprite(x, y, '');
-                //  The turret which we rotate (offset 30x14 from the tank)
+                //  The turret which we rotate
                 this.turret[i] = this.add.sprite(0, 0, 'turret' + i);
                 this.turret[i].anchor.set(-.9, .8);
-                // console.log(this.turret[i]);
                 this.parent[i].addChild(this.turret[i]);
                 //  The body of the tank
                 this.tank[i] = this.add.sprite(this.turret[i].x, this.turret[i].y, 'tank' + i);
@@ -219,9 +219,9 @@
                     return;
                 }
                 //  Re-position the bullet where the turret is
-                this.bullet.reset(this.parent[this.gameState].x, this.parent[this.gameState].y);
+                this.bullet.reset(this.turret[this.gameState].world.x, this.turret[this.gameState].world.y);
                 //  Now work out where the END of the turret is
-                var p = new Phaser.Point(this.turret[this.gameState].x, this.turret[this.gameState].y);
+                var p = new Phaser.Point(this.turret[this.gameState].world.x, this.turret[this.gameState].world.y);
                 p.rotate(p.x, p.y, this.turret[this.gameState].rotation, false, 34);
                 //  And position the flame sprite there
                 this.flame.x = p.x;
@@ -237,12 +237,12 @@
                 this.power = 0;
                 this.powerBar[this.gameState].setPercent(0);
                 this.fireCheck = false;
-              
+
                 this.gameState++;
                 if (this.gameState == this.tankX.length) {
                     this.gameState = 0;
                 };
-              
+
                 database.ref().set({
                     gameState: this.gameState,
                     angle: 0,
@@ -255,12 +255,12 @@
              *
              * @method hitTarget
              * @param {Phaser.Sprite} bullet - A reference to the bullet (same as this.bullet)
-             * @param {Phaser.Sprite} tank - The target the bullet hit
+             * @param {Phaser.Sprite} targets - The target the bullet hit
              */
-            hitTarget: function (bullet, tank) {
-                this.emitter.at(tank);
+            hitTarget: function (bullet, targets) {
+                console.log(this.emitter.at(targets));
                 this.emitter.explode(2000, 10);
-                tank.kill();
+                targets.kill();
                 this.removeBullet(true);
             },
             /**
@@ -289,18 +289,20 @@
                 //  If the bullet is in flight we don't let them control anything
                 if (this.bullet.exists) {
                     //  Bullet vs. the Targets
-                    this.physics.arcade.overlap(this.bullet, this.targets, this.hitTarget, null, this);
+                    var me = this.gameState - 1;
+                    if (me < 0) {
+                        me += this.tankX.length;
+                    };
+                    for (var i = 0; i < this.tankX.length; i++) {
+                        if (i != me) {
+                            this.physics.arcade.overlap(this.bullet, this.targets.children[i], this.hitTarget, null, this);
+                        };
+                    };
+
                     //  Bullet vs. the land
                     this.bulletVsLand();
                 }
                 else {
-                    // //  Allow them to set the power between 100 and 600
-                    // if (this.cursors.down.isDown && this.power > 100) {
-                    //     // this.power -= 2;
-                    // }
-                    // else if (this.cursors.up.isDown && this.power < 600) {
-                    //     // this.power += 2;
-                    // }
                     //  Allow them to set the angle, between -90 (straight up) and 0 (facing to the right)
                     if ((userAngle === -1 || this.cursors.left.isDown) && this.turret[this.gameState].angle > -165) {
 
@@ -328,7 +330,7 @@
                         this.camera.x += 10;
                     }
                     // run fire function when spacebar is let go
-                    if (userPower === 0 && this.fireButton.isUp && this.power != 0  && !this.fireCheck) {
+                    if (userPower === 0 && this.fireButton.isUp && this.power != 0 && !this.fireCheck) {
                         this.fire();
                     };
 
