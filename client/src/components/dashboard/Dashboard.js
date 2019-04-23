@@ -61,9 +61,24 @@ class Dashboard extends Component {
       <div className="dashboard">
         <div className="container">
           <div className="row">
-            <div className="col-md-12">
-              <h1 className="display-4">Dashboard</h1>
-              {dashboardContent}
+            <div className="col-md-12 ">
+              <div className="col-md-12">
+                <h1 className="display-4">Dashboard</h1>
+              </div>
+              <div className="col-md-12 dashpic">
+                <div className="col-md-2 dashicon">
+                  <img
+                    src={user.avatar}
+                    alt="userAvatar"
+                    className="rounded-circle"
+                  />
+                  <div> {user.name}</div>
+                </div>
+                <div className="col-md-5 dashbk" />
+
+                <div className="col-md-5 dashbk2" />
+              </div>
+              <div className="expdash"> {dashboardContent}</div>
             </div>
           </div>
         </div>

@@ -39,7 +39,7 @@ class Experience extends Component {
           <thead>
             <tr>
               <th>Game Name</th>
-              <th>Position/Title</th>
+              <th>Favorite Character</th>
               <th>How Long?</th>
               <th />
             </tr>

@@ -19,11 +19,11 @@ class Landing extends Component {
               <div className="col-md-12 text-center">
                 <h1 className="merntitle">MERN Fury</h1>
                 <div className="wrapper">
-                  <p className="lead">
+                  <h3>
                     {" "}
                     Create a MERN Fury profile, play games and connect with
                     other players.
-                  </p>
+                  </h3>
                   <hr />
                   <Link
                     to="/register"

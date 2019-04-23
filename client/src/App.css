@@ -13,7 +13,7 @@ img {
 .register {
   max-width: 100%;
   position: relative;
-  background: url("./img/Background1.png") no-repeat;
+  background: url("./img/bgtank.png") no-repeat;
   background-size: cover;
   background-position: center;
   height: 100vh;
@@ -21,9 +21,9 @@ img {
   margin-bottom: -57px;
 }
 
-.landing-inner {
+/* .landing-inner {
   padding-top: 80px;
-}
+} */
 
 /* .dark-overlay {
   background-color: rgba(0, 0, 0, 0.7);
@@ -47,7 +47,7 @@ img {
   color: #bbb !important;
 }
 .merntitle {
-  color: rgb(175, 39, 39);
+  color: rgb(185, 4, 4);
   font-family: "impact", "sans-serif";
   text-align: center;
   font-size: 500%;
@@ -64,9 +64,9 @@ img {
 .loginsubmit {
   /* margin-left: 42%; */
   padding: 2% 2% 2% 2%;
-  background-color: rgb(21, 224, 180);
+  /* background-color: rgb(21, 224, 180); */
   border: rgb(197, 255, 243);
-  color: black;
+  color: rgb(255, 255, 255);
 }
 
 .btn1 {
@@ -75,8 +75,8 @@ img {
 }
 
 .btn2 {
-  background-color: rgb(21, 224, 180);
-  border: rgb(197, 255, 243);
+  background-color: rgb(23, 162, 184);
+  border: rgb(23, 162, 184);
 }
 
 .tank-img {
@@ -94,5 +94,30 @@ img {
   margin-top: 5px;
 }
 .bg-info {
-  background-color: rgb(21, 224, 180);
+  background-color: rgb(23, 162, 184);
+}
+.dashpic {
+  display: flex;
+  width: auto;
+  height: 320px;
+  background-color: rgb(7, 7, 7);
+}
+.expdash {
+  margin-top: 60px;
+  height: auto;
+}
+.dashicon {
+  margin-top: 20px;
+  text-align: center;
+}
+.dashbk {
+  /* background: url("./img/tankbkone.png") no-repeat; */
+  color: white;
+  border: solid rgb(23, 162, 184);
+  border-width: 0px 0px 0px 5px;
+}
+.dashbk2 {
+  background: url("./img/smalltnk2.png") no-repeat;
+  border: solid rgb(23, 162, 184);
+  border-width: 0px 5px 0px 5px;
 }

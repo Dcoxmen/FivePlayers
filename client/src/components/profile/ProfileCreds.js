@@ -16,15 +16,15 @@ class ProfileCreds extends Component {
           )}
         </p>
         <p>
-          <strong>Position:</strong> {exp.title}
+          <strong>Favorite Game Chacater:</strong> {exp.title}
         </p>
-        <p>
+        {/* <p>
           {exp.location === "" ? null : (
             <span>
               <strong>Location: </strong> {exp.location}
             </span>
           )}
-        </p>
+        </p> */}
         <p>
           {exp.description === "" ? null : (
             <span>
@@ -37,11 +37,13 @@ class ProfileCreds extends Component {
     return (
       <div className="row">
         <div className="col-md-6">
-          <h3 className="text-center text-info">Experience</h3>
+          <h3 className="text-center text-info">
+            Favorite Games and Experience
+          </h3>
           {expItems.length > 0 ? (
             <ul className="list-group">{expItems}</ul>
           ) : (
-            <p className="text-center">No Experience Listed</p>
+            <p className="text-center">No Favorites Listed</p>
           )}
         </div>
 
@@ -50,6 +52,7 @@ class ProfileCreds extends Component {
           <ul className="list-group">
             <li>Treat other players with respect</li>
             <li>No profanity please.</li>
+            <li>Using Google Chrome is Recommended</li>
             <li>Profile is required to access MERN Fury</li>
             <li>Have some fun!</li>
           </ul>
