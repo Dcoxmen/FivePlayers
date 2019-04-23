@@ -6,8 +6,7 @@
     <meta charset="utf-8">
 </head>
 
-<body>
-
+<body style="background-color: black;">
     <div id="game"></div>
     <br>
     <div id="test"></div>
@@ -35,7 +34,7 @@
         var userAngle = 0;
         var userPower = 0;
         var userInput = 0;
-        var output = $("#test");
+        // var output = $("#test");
 
         // Firebase watcher + initial loader
         database.ref().on("value", function (snapshot) {
@@ -46,10 +45,10 @@
                 userInput = snapshot.val().direction;
             };
 
-            output.html("Player : " + (snapshot.val().gameState + 1));
-            output.append("<br>Angle : " + userAngle);
-            output.append("<br>Camera : " + userInput);
-            output.append("<br>Fire : " + userPower);
+            // output.html("Player : " + (snapshot.val().gameState + 1));
+            // output.append("<br>Angle : " + userAngle);
+            // output.append("<br>Camera : " + userInput);
+            // output.append("<br>Fire : " + userPower);
 
             // Handle the errors
         }, function (errorObject) {
@@ -112,8 +111,8 @@
                 this.load.image('target', './assets/image/target.png');
                 this.load.image('land', './assets/image/land.png');
                 for (i = 0; i < this.tankX.length; i++) {
-                    this.load.image('tank' + i, './assets/image/tank.png');
-                    this.load.image('turret' + i, './assets/image/turret.png');
+                    this.load.image('tank' + i, './assets/image/tank' + i + '.png');
+                    this.load.image('turret' + i, './assets/image/turret' + i + '.png');
                 }
             },
             create: function () {
@@ -148,23 +147,27 @@
                 this.emitter.setYSpeed(-100, -200);
                 this.emitter.setRotation();
 
-                for (var i = 0; i < this.tankX.length; i++) {
-                    this.createPlayer(this.tankX[i], this.tankY[i], i);
-                }
-
                 //  A single bullet that the tank will fire
                 this.bullet = this.add.sprite(0, 0, 'bullet');
                 this.bullet.exists = false;
                 this.physics.arcade.enable(this.bullet);
+
+                // Create tanks
+                for (var i = 0; i < this.tankX.length; i++) {
+                    this.createPlayer(this.tankX[i], this.tankY[i], i);
+                }
+
                 //  When we shoot this little flame sprite will appear briefly at the end of the turret
                 this.flame = this.add.sprite(0, 0, 'flame');
                 this.flame.anchor.set(0.5);
                 this.flame.visible = false;
+
                 //  Used to display the power of the shot
                 this.power = 0;
                 this.powerText = this.add.text(8, 8, 'Power: 0', { font: "18px Arial", fill: "#ffffff" });
                 this.powerText.setShadow(1, 1, 'rgba(0, 0, 0, 0.8)', 1);
                 this.powerText.fixedToCamera = true;
+
                 //  Some basic controls
                 this.cursors = this.input.keyboard.createCursorKeys();
                 this.fireButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -182,10 +185,12 @@
             },
             createPlayer: function (x, y, i) {
                 this.parent[i] = this.add.sprite(x, y, '');
+
                 //  The turret which we rotate
                 this.turret[i] = this.add.sprite(0, 0, 'turret' + i);
                 this.turret[i].anchor.set(-.9, .8);
                 this.parent[i].addChild(this.turret[i]);
+
                 //  The body of the tank
                 this.tank[i] = this.add.sprite(this.turret[i].x, this.turret[i].y, 'tank' + i);
                 this.tank[i].anchor.set(.5, .5);
@@ -197,6 +202,7 @@
                     this.turret[i].angle = -160;
                     this.tank[i].scale.x = -1;
                 }
+
                 // Power bar
                 var barConfig = { x: x, y: y - 33, width: 50, height: 5, animationDuration: 100 }
                 this.powerBar[i] = new HealthBar(this.game, barConfig);
@@ -217,14 +223,12 @@
                 var y = Math.floor(this.bullet.y);
                 var rgba = this.land.getPixel(x, y);
                 if (rgba.a > 0) {
+                    this.landSound.play();
                     this.land.blendDestinationOut();
                     this.land.circle(x, y, 16, 'rgba(0, 0, 0, 255');
                     this.land.blendReset();
                     this.land.update();
-                    //  If you like you could combine the above 4 lines:
-                    // this.land.blendDestinationOut().circle(x, y, 16, 'rgba(0, 0, 0, 255').blendReset().update();
                     this.removeBullet();
-                    this.landSound.play();
                 }
                 
             },
@@ -257,20 +261,8 @@
                 //  Our launch trajectory is based on the angle of the turret and the power
                 this.physics.arcade.velocityFromRotation(this.turret[this.gameState].rotation, this.power, this.bullet.body.velocity);
                 this.power = 0;
-                this.powerBar[this.gameState].setPercent(0);
+                // this.powerBar[this.gameState].setPercent(0);
                 this.fireCheck = false;
-
-                this.gameState++;
-                if (this.gameState == this.tankX.length) {
-                    this.gameState = 0;
-                };
-
-                database.ref().set({
-                    gameState: this.gameState,
-                    angle: 0,
-                    power: 0,
-                    direction: 0
-                });
             },
             /**
              * Called by physics.arcade.overlap if the bullet and a target overlap
@@ -280,11 +272,16 @@
              * @param {Phaser.Sprite} targets - The target the bullet hit
              */
             hitTarget: function (bullet, targets) {
-                console.log(this.emitter.at(targets));
+                var hit = this.tankX.indexOf(targets.position.x + 30);
+                this.tankX[hit] = -1;
+
+                this.explosionSound.play();
+                this.emitter.at(targets);
                 this.emitter.explode(2000, 10);
                 targets.kill();
+                this.parent[hit].kill();
+                this.powerBar[hit].kill();
                 this.removeBullet(true);
-                this.explosionSound.play();
             },
             /**
              * Removes the bullet, stops the camera following and tweens the camera back to the tank.
@@ -292,6 +289,12 @@
              *
              * @method removeBullet
              */
+            changeState: function () {
+                this.gameState++;
+                if (this.gameState === this.tankX.length) {
+                    this.gameState = 0;
+                };
+            },
             removeBullet: function (hasExploded) {
                 if (typeof hasExploded === 'undefined') { hasExploded = false; }
                 this.bullet.kill();
@@ -300,6 +303,18 @@
                 if (hasExploded) {
                     delay = 2000;
                 }
+
+                this.changeState();
+                while (this.tankX[this.gameState] === -1) {
+                    this.changeState();
+                };
+
+                database.ref().set({
+                    gameState: this.gameState,
+                    angle: 0,
+                    power: 0,
+                    direction: 0
+                });
 
                 this.add.tween(this.camera).to({ x: this.tankX[this.gameState] - 480 }, 1000, "Quint", true, delay);
             },
@@ -312,7 +327,7 @@
                 //  If the bullet is in flight we don't let them control anything
                 if (this.bullet.exists) {
                     //  Bullet vs. the Targets
-                    var me = this.gameState - 1;
+                    var me = this.gameState;
                     if (me < 0) {
                         me += this.tankX.length;
                     };
