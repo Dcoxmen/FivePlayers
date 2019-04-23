@@ -87,6 +87,8 @@
             this.cameraRight = null;
             this.fireButton = null;
             this.fireCheck = false;
+
+            this.fireSound;
         };
         PhaserGame.prototype = {
             init: function () {
@@ -98,6 +100,8 @@
                 this.physics.arcade.gravity.y = 200;
             },
             preload: function () {
+                this.load.audio('fire', './assets/sound/fire.mp3');
+
                 this.load.image('bullet', './assets/image/bullet.png');
                 this.load.image('background', './assets/image/background.png');
                 this.load.image('flame', './assets/image/flame.png');
@@ -162,6 +166,13 @@
                 this.fireButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
                 this.cameraLeft = this.input.keyboard.addKey(Phaser.Keyboard.COMMA);
                 this.cameraRight = this.input.keyboard.addKey(Phaser.Keyboard.PERIOD);
+
+                this.fireSound = this.add.audio('fire');
+
+                //  Being mp3 files these take time to decode, so we can't play them instantly
+                //  Using setDecodedCallback we can be notified when they're ALL ready for use.
+                //  The audio files could decode in ANY order, we can never be sure which it'll be.
+                // this.sound.setDecodedCallback([this.fireSound], this.start, this);
             },
             createPlayer: function (x, y, i) {
                 this.parent[i] = this.add.sprite(x, y, '');
@@ -218,6 +229,9 @@
                 if (this.bullet.exists) {
                     return;
                 }
+
+                this.fireSound.play();
+
                 //  Re-position the bullet where the turret is
                 this.bullet.reset(this.turret[this.gameState].world.x, this.turret[this.gameState].world.y);
                 //  Now work out where the END of the turret is
