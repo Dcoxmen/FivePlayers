@@ -111,13 +111,12 @@ img {
   text-align: center;
 }
 .dashbk {
-  /* background: url("./img/tankbkone.png") no-repeat; */
-  color: white;
+  background: url("./img/scorebrd-sample.png") no-repeat;
   border: solid rgb(23, 162, 184);
   border-width: 0px 0px 0px 5px;
 }
 .dashbk2 {
   background: url("./img/smalltnk2.png") no-repeat;
   border: solid rgb(23, 162, 184);
-  border-width: 0px 5px 0px 5px;
+  border-width: 0px 0px 0px 5px;
 }
