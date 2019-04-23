@@ -109,8 +109,8 @@
                 this.load.image('target', './assets/image/target.png');
                 this.load.image('land', './assets/image/land.png');
                 for (i = 0; i < this.tankX.length; i++) {
-                    this.load.image('tank' + i, './assets/image/tank.png');
-                    this.load.image('turret' + i, './assets/image/turret.png');
+                    this.load.image('tank' + i, './assets/image/tank' + i + '.png');
+                    this.load.image('turret' + i, './assets/image/turret' + i + '.png');
                 }
             },
             create: function () {
@@ -145,14 +145,15 @@
                 this.emitter.setYSpeed(-100, -200);
                 this.emitter.setRotation();
 
-                for (var i = 0; i < this.tankX.length; i++) {
-                    this.createPlayer(this.tankX[i], this.tankY[i], i);
-                }
-
                 //  A single bullet that the tank will fire
                 this.bullet = this.add.sprite(0, 0, 'bullet');
                 this.bullet.exists = false;
                 this.physics.arcade.enable(this.bullet);
+
+                // Create tanks
+                for (var i = 0; i < this.tankX.length; i++) {
+                    this.createPlayer(this.tankX[i], this.tankY[i], i);
+                }
 
                 //  When we shoot this little flame sprite will appear briefly at the end of the turret
                 this.flame = this.add.sprite(0, 0, 'flame');
