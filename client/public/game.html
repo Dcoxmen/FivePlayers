@@ -88,7 +88,8 @@
             this.fireCheck = false;
 
             this.fireSound;
-            this.explodeSound;
+            this.explosionSound;
+            this.landSound;
         };
         PhaserGame.prototype = {
             init: function () {
@@ -101,7 +102,8 @@
             },
             preload: function () {
                 this.load.audio('fire', './assets/sound/fire.mp3');
-                this.load.audio('explode', './assets/sound/explode.mp3');
+                this.load.audio('explosion', './assets/sound/explode.mp3');
+                this.load.audio('land', './assets/sound/land.mp3');
 
                 this.load.image('bullet', './assets/image/bullet.png');
                 this.load.image('background', './assets/image/background.png');
@@ -173,7 +175,8 @@
                 this.cameraRight = this.input.keyboard.addKey(Phaser.Keyboard.PERIOD);
 
                 this.fireSound = this.add.audio('fire');
-                this.explodeSound = this.add.audio('explode');
+                this.explosionSound = this.add.audio('explosion');
+                this.landSound = this.add.audio('land');
 
                 //  Being mp3 files these take time to decode, so we can't play them instantly
                 //  Using setDecodedCallback we can be notified when they're ALL ready for use.
@@ -220,12 +223,14 @@
                 var y = Math.floor(this.bullet.y);
                 var rgba = this.land.getPixel(x, y);
                 if (rgba.a > 0) {
+                    this.landSound.play();
                     this.land.blendDestinationOut();
                     this.land.circle(x, y, 16, 'rgba(0, 0, 0, 255');
                     this.land.blendReset();
                     this.land.update();
                     this.removeBullet();
                 }
+                
             },
             /**
              * Called by fireButton.onDown
@@ -270,7 +275,7 @@
                 var hit = this.tankX.indexOf(targets.position.x + 30);
                 this.tankX[hit] = -1;
 
-                this.explodeSound.play();
+                this.explosionSound.play();
                 this.emitter.at(targets);
                 this.emitter.explode(2000, 10);
                 targets.kill();

@@ -8,15 +8,23 @@ img {
   max-width: 100%;
   margin: 0;
 }
+
+.wrapper,
+.display-4,
+.lead,
+.loginsubmit {
+  font-weight: bolder;
+  color: rgb(43, 43, 43);
+}
 .landing,
 .login,
 .register {
   max-width: 100%;
   position: relative;
-  background: url("./img/Background1.png") no-repeat;
+  background: url("./img/bgtank.png") no-repeat;
   background-size: cover;
   background-position: center;
-  height: 100vh;
+  height: 120vh;
   margin-top: -24px;
   margin-bottom: -57px;
 }
@@ -55,7 +63,7 @@ img {
 }
 .wrapper {
   margin-top: 2%;
-  background-color: rgba(209, 209, 209, 0.5);
+  background-color: rgba(209, 209, 209, 0.7);
   border-radius: 5px;
   padding: 5% 2% 5% 2%;
 }
