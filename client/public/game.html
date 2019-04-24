@@ -224,12 +224,6 @@
                 var barConfig = { x: x, y: y - 33, width: 50, height: 5, animationDuration: 100 }
                 this.powerBar[i] = new HealthBar(this.game, barConfig);
                 this.powerBar[i].setPercent(0);
-
-                // // Arrow
-                // this.arrow[i] = game.add.sprite(x-17, y-85, 'arrow');  
-                // // this.arrow[i] = game.add.sprite(x-17, y-85, 'arrow2'); 
-                // this.arrow[i].animations.add('point', [0,1,2,3,4,5,6,7,8,9,10,11,12,13], 1);
-                // this.arrow[i].animations.play('point', 60, true);
             },
             /**
              * Called by update if the bullet is in flight.
