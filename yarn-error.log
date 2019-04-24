@@ -1,0 +1,66 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add prefer-offline
+
+PATH: 
+  C:\Users\mikeo\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\mikeo\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Program Files\Intel\WiFi\bin;C:\Program Files\Common Files\Intel\WirelessCommon;C:\Program Files\nodejs;C:\Program Files\MongoDB\Server\4.0\bin;C:\Program Files (x86)\Yarn\bin;C:\Users\mikeo\AppData\Local\Microsoft\WindowsApps;C:\Users\mikeo\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\mikeo\AppData\Roaming\npm;C:\Program Files\heroku\bin;C:\Program Files\Bandizip;C:\Users\mikeo\AppData\Local\Yarn\bin;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+
+Yarn version: 
+  1.15.2
+
+Node version: 
+  10.14.2
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/prefer-offline: Not found
+      at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:65167:18)
+      at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:129541:22)
+      at Request.emit (events.js:182:13)
+      at Request.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:130513:10)
+      at Request.emit (events.js:182:13)
+      at IncomingMessage.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:130435:12)
+      at Object.onceWrapper (events.js:273:13)
+      at IncomingMessage.emit (events.js:187:15)
+      at endReadableNT (_stream_readable.js:1094:12)
+      at process._tickCallback (internal/process/next_tick.js:63:19)
+
+npm manifest: 
+  {
+    "name": "gamemaker",
+    "version": "1.0.0",
+    "description": "Game makers network.",
+    "main": "server.js",
+    "scripts": {
+      "client-install": "npm install --prefix client",
+      "start": "node server.js",
+      "server": "nodemon server.js",
+      "client": "npm start --prefix client",
+      "dev": "concurrently \"npm run server\" \"npm run client\"",
+      "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    },
+    "author": "5Players",
+    "license": "ISC",
+    "dependencies": {
+      "bcryptjs": "^2.4.3",
+      "body-parser": "^1.18.3",
+      "concurrently": "^4.1.0",
+      "express": "^4.16.4",
+      "gravatar": "^1.8.0",
+      "jsonwebtoken": "^8.5.1",
+      "mongoose": "^5.4.20",
+      "passport": "^0.4.0",
+      "passport-jwt": "^4.0.0",
+      "validator": "^10.11.0"
+    },
+    "devDependencies": {
+      "nodemon": "^1.18.10"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
