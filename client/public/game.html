@@ -82,7 +82,7 @@
             this.arrow = null;
             this.power = 0;
             this.maxPower = 600;
-            this.powerText = null;
+            // this.powerText = null;
             this.cursors = null;
             this.cameraLeft = null;
             this.cameraRight = null;
@@ -107,7 +107,6 @@
                 this.load.audio('fire', './assets/sound/fire.mp3');
                 this.load.audio('explosion', './assets/sound/explode.mp3');
                 this.load.audio('land', './assets/sound/land.mp3');
-                this.load.audio('click', './assets/sound/click.mp3');
 
                 this.load.image('bullet', './assets/image/bullet.png');
                 this.load.image('background', './assets/image/background.png');
@@ -170,9 +169,9 @@
 
                 //  Used to display the power of the shot
                 this.power = 0;
-                this.powerText = this.add.text(8, 8, 'Power: 0', { font: "18px Arial", fill: "#ffffff" });
-                this.powerText.setShadow(1, 1, 'rgba(0, 0, 0, 0.8)', 1);
-                this.powerText.fixedToCamera = true;
+                // this.powerText = this.add.text(8, 8, 'Power: 0', { font: "18px Arial", fill: "#ffffff" });
+                // this.powerText.setShadow(1, 1, 'rgba(0, 0, 0, 0.8)', 1);
+                // this.powerText.fixedToCamera = true;
 
                 //  Some basic controls
                 this.cursors = this.input.keyboard.createCursorKeys();
@@ -183,7 +182,6 @@
                 this.fireSound = this.add.audio('fire');
                 this.explosionSound = this.add.audio('explosion');
                 this.landSound = this.add.audio('land');
-                this.clickSound = this.add.audio('click');
 
 
                 // Arrow
@@ -373,7 +371,6 @@
                         this.turret[this.gameState].angle--;
                         if (this.turret[this.gameState].angle < -90) {
                             this.tank[this.gameState].scale.x = -1;
-                            this.clickSound.play();
                         }
                     }
                     else if ((userAngle === 1 || this.cursors.right.isDown) && this.turret[this.gameState].angle < -15) {
@@ -382,7 +379,6 @@
                         this.turret[this.gameState].angle++;
                         if (this.turret[this.gameState].angle > -90) {
                             this.tank[this.gameState].scale.x = 1;
-                            this.clickSound.play();
                         }
                     }
                     //  Move camera
@@ -412,7 +408,7 @@
                         }
                     }
                     //  Update the text
-                    this.powerText.text = 'Power: ' + this.power;
+                    // this.powerText.text = 'Power: ' + this.power;
                 }
             }
         };
