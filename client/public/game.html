@@ -67,8 +67,8 @@
             this.parent = [];
             this.turret = [];
             this.tank = [];
-            this.tankX = [64, 465, 990, 1348, 1817];
-            this.tankY = [402, 166, 84, 338, 337];
+            this.tankX = [76, 450, 985, 1425, 1825];
+            this.tankY = [218, 404, 404, 226, 403];
 
             this.gameState = 0;
             this.flame = null;
@@ -327,12 +327,8 @@
                 //  If the bullet is in flight we don't let them control anything
                 if (this.bullet.exists) {
                     //  Bullet vs. the Targets
-                    var me = this.gameState;
-                    if (me < 0) {
-                        me += this.tankX.length;
-                    };
                     for (var i = 0; i < this.tankX.length; i++) {
-                        if (i != me) {
+                        if (i != this.gameState) {
                             this.physics.arcade.overlap(this.bullet, this.targets.children[i], this.hitTarget, null, this);
                         };
                     };
