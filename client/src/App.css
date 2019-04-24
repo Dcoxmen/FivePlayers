@@ -2,11 +2,14 @@ img {
   width: 100%;
 }
 /* .App {
-  background: url("./img/Background1.png") no-repeat;
+  background: url("./img/tankBG.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
 } */
 .container {
   max-width: 100%;
   margin: 0;
+  padding: 0;
 }
 
 .wrapper,
@@ -20,11 +23,10 @@ img {
 .login,
 .register {
   max-width: 100%;
-  position: relative;
-  background: url("./img/bgtank.png") no-repeat;
+  background: url("./img/battletank.jpg") no-repeat;
   background-size: cover;
   background-position: center;
-  height: 120vh;
+  height: 87vh;
   margin-top: -24px;
   margin-bottom: -57px;
 }
