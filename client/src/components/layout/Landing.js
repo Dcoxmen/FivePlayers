@@ -17,7 +17,7 @@ class Landing extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-12 text-center">
-                <h1 className="merntitle">MERN Fury</h1>
+                <h1 className="merntitle"></h1>
                 <div className="wrapper">
                   <p className="lead">
                     {" "}
