@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 import { clearCurrentProfile } from "../../actions/profileActions";
+import intro from "../../sound/intro.mp3";
 
 class Navbar extends Component {
   onLogoutClick(e) {
@@ -62,6 +63,7 @@ class Navbar extends Component {
             <Link className="navbar-brand" to="/">
               MERN FURY
             </Link>
+            <audio src={intro} autoPlay loop />
             <button
               className="navbar-toggler"
               type="button"
