@@ -62,10 +62,12 @@
             this.tank = [];
             this.tankX = [];
             this.tankY = [];
-            this.userX = [76, 390, 985, 1425, 1825];
-            this.userY = [218, 403, 402, 226, 403];
+            // this.userX = [76, 390, 985, 1425, 1825];
+            this.userX = [76, 390]
+            // this.userY = [218, 403, 402, 226, 403];
+            this.userY = [218, 403];
 
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < 2; i++) {
                 var j = Math.floor(Math.random() * this.userX.length);
                 this.tankX.push(this.userX[j]);
                 this.tankY.push(this.userY[j]);
@@ -98,6 +100,9 @@
             this.cameraRight = null;
             this.fireButton = null;
             this.fireCheck = false;
+            this.killed = 0;
+            this.crown = null;
+            this.winnerGif = null;
 
             this.fireSound;
             this.explosionSound;
@@ -124,7 +129,10 @@
                 this.load.image('target', './assets/image/target.png');
                 this.load.image('land', './assets/image/land.png');
 
-                this.load.spritesheet('arrow', './assets/image/arrow.png', 32, 32)
+                // sprite sheets
+                this.load.spritesheet('crown', './assets/image/crown2.png', 50, 50);
+                this.load.spritesheet('arrow', './assets/image/arrow.png', 32, 32);
+                this.load.spritesheet('winner', './assets/image/winner.png', 80, 39);
                 for (i = 0; i < this.tankX.length; i++) {
                     this.load.image('tank' + i, './assets/image/tank' + i + '.png');
                     this.load.image('turret' + i, './assets/image/turret' + i + '.png');
@@ -199,6 +207,27 @@
                 // this.arrow[i] = game.add.sprite(x-17, y-85, 'arrow2'); 
                 this.arrow.animations.add('point');
                 this.arrow.animations.play('point', 60, true);
+            },
+            win: function () {
+                var tankIndex;
+                for (var i = 0; i < this.tankX.length; i++) {
+                    if (this.tankX[i] !== -1) {
+                        tankIndex = i;
+                    }
+                }
+                this.parent[tankIndex].scale.setTo(2, 2);
+                this.parent[tankIndex].x = 480;
+                this.parent[tankIndex].y = 250;
+                this.camera.follow(this.parent[tankIndex]);
+                this.targets.kill();
+                this.arrow.kill();
+                this.powerBar[tankIndex].kill();
+                this.crown = game.add.sprite(this.parent[tankIndex].x - 20, this.parent[tankIndex].y - 70, 'crown');
+                this.crown.animations.add('bling');
+                this.crown.animations.play('bling', 60, true);
+                this.winnerGif = game.add.sprite(this.parent[tankIndex].x - 30, this.parent[tankIndex].y - 100, 'winner');
+                this.winnerGif.animations.add('winner');
+                this.winnerGif.animations.play('winner', 5, true);
             },
             createPlayer: function (x, y, i) {
                 this.parent[i] = this.add.sprite(x, y, '');
@@ -299,7 +328,24 @@
                 this.parent[hit].kill();
                 this.powerBar[hit].kill();
                 this.removeBullet(true);
+                if (this.killed === this.tankX.length - 2) {
+
+                    this.gameState = 5;
+                    database.ref().set({
+                        gameState: this.gameState,
+                        angle: 0,
+                        power: 0,
+                        direction: 0
+                    });
+
+                    setTimeout(this.win.bind(this), 1000);
+                }
+                else {
+                    this.killed++;
+                }
+
             },
+
             /**
              * Removes the bullet, stops the camera following and tweens the camera back to the tank.
              * Have put this into its own method as it's called from several places.
@@ -350,6 +396,9 @@
              * @method update
              */
             update: function () {
+                if (this.gameState === 5) {
+                    return;
+                }
                 //  If the bullet is in flight we don't let them control anything
                 if (this.bullet.exists) {
                     //  Bullet vs. the Targets
