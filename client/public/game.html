@@ -31,7 +31,7 @@
         // Create a variable to reference the database.
         var database = firebase.database();
 
-        var players = 5;
+        var players = 2;
         var userAngle = 0;
         var userPower = 0;
         var userInput = 0;
@@ -118,6 +118,10 @@
             this.explosionSound;
             this.landSound;
             this.clickSound;
+            this.applauseSound;
+            this.bgMusic;
+            this.bgmPlay;
+            this.bgmStop;
         };
         PhaserGame.prototype = {
             init: function () {
@@ -132,6 +136,8 @@
                 this.load.audio('fire', './assets/sound/fire.mp3');
                 this.load.audio('explosion', './assets/sound/explode.mp3');
                 this.load.audio('land', './assets/sound/land.mp3');
+                this.load.audio('applause', './assets/sound/applause.mp3')
+                this.load.audio('bgm', './assets/sound/bgm.mp3');
 
                 this.load.image('bullet', './assets/image/bullet.png');
                 this.load.image('background', './assets/image/background.png');
@@ -206,11 +212,17 @@
                 this.fireButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
                 this.cameraLeft = this.input.keyboard.addKey(Phaser.Keyboard.COMMA);
                 this.cameraRight = this.input.keyboard.addKey(Phaser.Keyboard.PERIOD);
+                this.bgmPlay = this.input.keyboard.addKey(Phaser.Keyboard.P);
+                this.bgmStop = this.input.keyboard.addKey(Phaser.Keyboard.O);
 
                 this.fireSound = this.add.audio('fire');
                 this.explosionSound = this.add.audio('explosion');
                 this.landSound = this.add.audio('land');
-
+                this.applauseSound = this.add.audio('applause');
+                this.bgMusic = this.add.audio('bgm');
+                this.bgMusic.loop = true;
+                this.bgMusic.volume = 0.4;
+                this.bgMusic.play();
 
                 // Arrow
                 this.arrow = game.add.sprite(this.parent[this.gameState].x - 15, this.parent[this.gameState].y - 80, 'arrow');
@@ -327,7 +339,7 @@
                         direction: 0
                     });
 
-                    setTimeout(this.win.bind(this), 1000);
+                    setTimeout(this.win.bind(this), 2000);
                 }
                 else {
                     this.killed++;
@@ -344,8 +356,8 @@
                 this.turret[tankIndex].angle = -20;
                 this.tank[tankIndex].scale.x = 1;
                 this.parent[tankIndex].scale.setTo(2, 2);
-                this.parent[tankIndex].x = 480;
-                this.parent[tankIndex].y = 250;
+                this.parent[tankIndex].x = 717;
+                this.parent[tankIndex].y = 234;
                 this.camera.follow(this.parent[tankIndex]);
                 this.targets.kill();
                 this.arrow.kill();
@@ -356,6 +368,8 @@
                 this.winnerGif = game.add.sprite(this.parent[tankIndex].x - 30, this.parent[tankIndex].y - 100, 'winner');
                 this.winnerGif.animations.add('winner');
                 this.winnerGif.animations.play('winner', 5, true);
+                this.bgMusic.stop();
+                this.applauseSound.play();
             },
             /**
              * Removes the bullet, stops the camera following and tweens the camera back to the tank.
@@ -468,6 +482,13 @@
                     }
                     //  Update the text
                     // this.powerText.text = 'Power: ' + this.power;
+
+                    if (this.bgmPlay.isDown && !this.bgMusic.isPlaying) {
+                        this.bgMusic.play();
+                    };
+                    if (this.bgmStop.isDown) {
+                        this.bgMusic.stop();
+                    };
                 }
             }
         };

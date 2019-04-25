@@ -27,10 +27,24 @@ img {
   background: url("./img/battletank.jpg") no-repeat;
   background-size: cover;
   background-position: center;
-  height: 87vh;
+  height: 88vh;
   margin-top: -24px;
   margin-bottom: -57px;
+  text-align: center;
 }
+
+.wrapper {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.title {
+    width: 338px !important;
+    height: 209px !important;
+  }
+
 
 .landing-inner {
   padding-top: 80px;
