@@ -55,22 +55,32 @@
             console.log("Errors handled: " + errorObject.code);
         });
 
-        database.ref().set({
-            gameState: 0,
-            angle: 0,
-            power: 0,
-            direction: 0
-        });
-
         var game = new Phaser.Game(960, 480, Phaser.CANVAS, 'game');
         var PhaserGame = function (game) {
             this.parent = [];
             this.turret = [];
             this.tank = [];
-            this.tankX = [76, 450, 985, 1425, 1825];
-            this.tankY = [218, 404, 404, 226, 403];
+            this.tankX = [];
+            this.tankY = [];
+            this.userX = [76, 390, 985, 1425, 1825];
+            this.userY = [218, 403, 402, 226, 403];
 
-            this.gameState = 0;
+            for (var i = 0; i < 5; i++) {
+                var j = Math.floor(Math.random() * this.userX.length);
+                this.tankX.push(this.userX[j]);
+                this.tankY.push(this.userY[j]);
+                this.userX.splice(j, 1);
+                this.userY.splice(j, 1);
+            };
+
+            this.gameState = this.tankX.indexOf(76);
+            database.ref().set({
+                gameState: this.gameState,
+                angle: 0,
+                power: 0,
+                direction: 0
+            });
+
             this.flame = null;
             this.bullet = null;
             this.background = null;
@@ -82,7 +92,7 @@
             this.arrow = null;
             this.power = 0;
             this.maxPower = 600;
-            this.powerText = null;
+            // this.powerText = null;
             this.cursors = null;
             this.cameraLeft = null;
             this.cameraRight = null;
@@ -92,6 +102,7 @@
             this.fireSound;
             this.explosionSound;
             this.landSound;
+            this.clickSound;
         };
         PhaserGame.prototype = {
             init: function () {
@@ -112,7 +123,7 @@
                 this.load.image('flame', './assets/image/flame.png');
                 this.load.image('target', './assets/image/target.png');
                 this.load.image('land', './assets/image/land.png');
-                
+
                 this.load.spritesheet('arrow', './assets/image/arrow.png', 32, 32)
                 for (i = 0; i < this.tankX.length; i++) {
                     this.load.image('tank' + i, './assets/image/tank' + i + '.png');
@@ -168,9 +179,9 @@
 
                 //  Used to display the power of the shot
                 this.power = 0;
-                this.powerText = this.add.text(8, 8, 'Power: 0', { font: "18px Arial", fill: "#ffffff" });
-                this.powerText.setShadow(1, 1, 'rgba(0, 0, 0, 0.8)', 1);
-                this.powerText.fixedToCamera = true;
+                // this.powerText = this.add.text(8, 8, 'Power: 0', { font: "18px Arial", fill: "#ffffff" });
+                // this.powerText.setShadow(1, 1, 'rgba(0, 0, 0, 0.8)', 1);
+                // this.powerText.fixedToCamera = true;
 
                 //  Some basic controls
                 this.cursors = this.input.keyboard.createCursorKeys();
@@ -184,15 +195,10 @@
 
 
                 // Arrow
-                this.arrow= game.add.sprite(this.parent[0].x - 15, this.parent[0].y - 80, 'arrow');
+                this.arrow = game.add.sprite(this.parent[this.gameState].x - 15, this.parent[this.gameState].y - 80, 'arrow');
                 // this.arrow[i] = game.add.sprite(x-17, y-85, 'arrow2'); 
                 this.arrow.animations.add('point');
                 this.arrow.animations.play('point', 60, true);
-                
-                //  Being mp3 files these take time to decode, so we can't play them instantly
-                //  Using setDecodedCallback we can be notified when they're ALL ready for use.
-                //  The audio files could decode in ANY order, we can never be sure which it'll be.
-                // this.sound.setDecodedCallback([this.fireSound], this.start, this);
             },
             createPlayer: function (x, y, i) {
                 this.parent[i] = this.add.sprite(x, y, '');
@@ -206,7 +212,7 @@
                 this.tank[i] = this.add.sprite(this.turret[i].x, this.turret[i].y, 'tank' + i);
                 this.tank[i].anchor.set(.5, .5);
                 this.parent[i].addChild(this.tank[i]);
-                if (i < this.tankX.length / 2) {
+                if (Math.random() < .5) {
                     this.turret[i].angle = -20;
                 } else {
                     // Flip the tank for player# 3~5
@@ -218,12 +224,6 @@
                 var barConfig = { x: x, y: y - 33, width: 50, height: 5, animationDuration: 100 }
                 this.powerBar[i] = new HealthBar(this.game, barConfig);
                 this.powerBar[i].setPercent(0);
-
-                // // Arrow
-                // this.arrow[i] = game.add.sprite(x-17, y-85, 'arrow');  
-                // // this.arrow[i] = game.add.sprite(x-17, y-85, 'arrow2'); 
-                // this.arrow[i].animations.add('point', [0,1,2,3,4,5,6,7,8,9,10,11,12,13], 1);
-                // this.arrow[i].animations.play('point', 60, true);
             },
             /**
              * Called by update if the bullet is in flight.
@@ -407,7 +407,7 @@
                         }
                     }
                     //  Update the text
-                    this.powerText.text = 'Power: ' + this.power;
+                    // this.powerText.text = 'Power: ' + this.power;
                 }
             }
         };
