@@ -14,8 +14,9 @@ img {
 
 .wrapper,
 .display-4,
-.lead,
-.loginsubmit {
+.lead
+/* .loginsubmit  */
+{
   font-weight: bolder;
   color: rgb(43, 43, 43);
 }
@@ -74,12 +75,12 @@ img {
 .loginsubmit {
   /* margin-left: 42%; */
   padding: 2% 2% 2% 2%;
-  background-color: rgb(21, 224, 180);
+  /* background-color: rgb(21, 224, 180);
   border: rgb(197, 255, 243);
-  color: black;
+  color: black; */
 }
 
-.btn1 {
+/* .btn1 {
   background-color: rgb(21, 35, 224);
   border: rgb(203, 207, 253);
 }
@@ -87,7 +88,7 @@ img {
 .btn2 {
   background-color: rgb(21, 224, 180);
   border: rgb(197, 255, 243);
-}
+} */
 
 .tank-img {
   width: 220px;

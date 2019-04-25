@@ -21,17 +21,17 @@ class Landing extends Component {
                 <div className="wrapper">
                   <p className="lead">
                     {" "}
-                    Create a MERN Fury profile, play games and connect with
+                    Create a MERN FURY profile, play games and connect with
                     other players.
                   </p>
                   <hr />
                   <Link
                     to="/register"
-                    className="btn1 btn btn-lg btn-info mr-2"
+                    className="btn1 btn btn-lg btn-warning mr-2"
                   >
                     Sign Up
                   </Link>
-                  <Link to="/login" className="btn2 btn btn-lg btn-light">
+                  <Link to="/login" className="btn2 btn btn-lg btn-primary">
                     Login
                   </Link>
                 </div>
