@@ -1,13 +1,21 @@
-# MERN CRUD w JWT Auth and Redux - Game Maker
+# MERN Fury Phaser Game and CRUD Profile w JWT Auth and Redux
 
-# Game Maker Profile Project
+# Phaser Tank Game with Membership Portal
 
-> Profile sign up and login network app built with the MERN stack, JWT authentication, and Redux. This app allows user to create a profile
-> to display info, game links, and, skill set about themselves to follow members. Authentication is managed by Passport and JWT Token creation while
-> Redux manages this across states. Concurrently was installed to create an easier way to start up both the node.js and react client servers together
-> for faster development. Backend set-up (aka Node server) included Database model design using MongoDB and Mongoose then user api routes and authentication were built and tested with Postman. Frontend with bootstrap and react client was initiated. React Router and Redux with Reducers were used to
-> manage states and authentication. MVC concept applied. I am new to react and redux. Still learning and challenging myself. This is first time I have used redux.The goal and main feature of the app is to present
-> the game made with phaser technology.
+> MERN Fury is a lightweight turn based game made with the Phaser javascript engine framework for 2D HTML5 browser games. The game is accessible
+> through a player membership portal which requires a name, email and password to join. Once registered the new user is redirected to the login
+> form that takes them to their player dashboard. All of the members features are available from this interface to add/update a profile, list your
+> favorite game links, skill set, and, access to play MERN Fury. Membership profiles are viewable by the public and are not required to be logged
+> into view. Profile portal network was built with the MERN stack technology, JWT authentication, and Redux.
+> Authentication is managed by Passport and JWT Token creation while Redux manages this across states. Concurrently was installed to create
+> an easier way to start up both the node.js and react client servers together for faster development.
+> Designed database models using MongoDB and Mongoose then user api routes and authentication were built and tested with Postman. The Frontend was
+> made with react and bootstrap. React Router and Redux with Reducers were used to manage states and authentication. MVC concepts were applied.
+> The game was made with phaser technology utilizing it's built in Arcade physics engine and WebGL with Canvas to create fast rendering. This is
+> is all connected and powered from a google firebase database using device orientation sensors to use a smartphone as an optional controller.
+> Some challenges in developing the game included resolving land and vehicle destruction issues, controller syncronization and state sequence.
+>
+> Here is link to demo of working app: https://quiet-refuge-58696.herokuapp.com/login
 
 ## Quick Start
 

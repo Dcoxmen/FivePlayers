@@ -22,11 +22,12 @@ img {
 .landing,
 .login,
 .register {
+  overflow: hidden;
   max-width: 100%;
   background: url("./img/battletank.jpg") no-repeat;
   background-size: cover;
   background-position: center;
-  height: 87vh;
+  height: 89vh;
   margin-top: -24px;
   margin-bottom: -57px;
 }
