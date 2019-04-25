@@ -22,7 +22,7 @@
                 <i class="material-icons">fast_rewind</i></button>
             <button id="cameraRight" class="btn-large waves-effect waves-light grey darken-1">
                 <i class="material-icons">fast_forward</i></button>
-            <button id="fireButton" class="btn-floating btn-large waves-effect waves-light red">
+            <button id="fireButton" class="btn-floating btn-large waves-effect waves-light orange">
                 <i class="material-icons fireIcon" style="font-size: 50px; margin: 25px 0 0 1px;">flash_on</i></button>
             <div id="output"></div>
         </div>
@@ -32,7 +32,6 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
 
     <script>
         $(document).ready(function () {
@@ -129,7 +128,7 @@
                         update(gameState, -1, userPower, userInput);
                     }
                 })
-                .mouseup(function () {
+                .on('touchend mouseup', function () {
                     angleBtn = 0;
                     if (userAngle != 0 && userNo === (gameState + 1)) {
                         userAngle = 0;
@@ -145,7 +144,7 @@
                         update(gameState, 1, userPower, userInput);
                     }
                 })
-                .mouseup(function () {
+                .on('touchend mouseup', function () {
                     angleBtn = 0;
                     if (userAngle != 0 && userNo === (gameState + 1)) {
                         userAngle = 0;
@@ -160,7 +159,7 @@
                         update(gameState, userAngle, userPower, -1);
                     }
                 })
-                .mouseup(function () {
+                .on('touchend mouseup', function () {
                     if (userInput != 0 && userNo === (gameState + 1)) {
                         userInput = 0;
                         update(gameState, userAngle, userPower, 0);
@@ -174,7 +173,7 @@
                         update(gameState, userAngle, userPower, 1);
                     }
                 })
-                .mouseup(function () {
+                .on('touchend mouseup', function () {
                     if (userInput != 0 && userNo === (gameState + 1)) {
                         userInput = 0;
                         update(gameState, userAngle, userPower, 0);
@@ -189,7 +188,7 @@
                         update(gameState, userAngle, 1, userInput);
                     }
                 })
-                .mouseup(function () {
+                .on('touchend mouseup', function () {
                     if (userPower != 0 && fireBtn != 0 && userNo === (gameState + 1)) {
                         fireBtn = 0;
                         userPower = 0;
