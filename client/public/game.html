@@ -31,6 +31,7 @@
         // Create a variable to reference the database.
         var database = firebase.database();
 
+        var players = 5;
         var userAngle = 0;
         var userPower = 0;
         var userInput = 0;
@@ -40,6 +41,9 @@
         database.ref().on("value", function (snapshot) {
             if (snapshot.exists()) {
                 // storing the snapshot.val() in a variable for convenience
+                if (snapshot.val().gameState > 10) {
+                    players = snapshot.val().gameState - 10;
+                }
                 userAngle = snapshot.val().angle;
                 userPower = snapshot.val().power;
                 userInput = snapshot.val().direction;
@@ -62,12 +66,10 @@
             this.tank = [];
             this.tankX = [];
             this.tankY = [];
-            // this.userX = [76, 390, 985, 1425, 1825];
-            this.userX = [76, 390]
-            // this.userY = [218, 403, 402, 226, 403];
-            this.userY = [218, 403];
+            this.userX = [76, 390, 985, 1425, 1825];
+            this.userY = [218, 403, 402, 226, 403];
 
-            for (var i = 0; i < 2; i++) {
+            for (var i = 0; i < players; i++) {
                 var j = Math.floor(Math.random() * this.userX.length);
                 this.tankX.push(this.userX[j]);
                 this.tankY.push(this.userY[j]);
@@ -75,7 +77,15 @@
                 this.userY.splice(j, 1);
             };
 
-            this.gameState = this.tankX.indexOf(76);
+            if (this.tankX.indexOf(76) === -1) {
+                var j = Math.floor(Math.random() * this.tankX.length);
+                this.tankX[j] = 76;
+                this.tankY[j] = 218;
+                this.gameState = j;
+            } else {
+                this.gameState = this.tankX.indexOf(76);
+            };
+
             database.ref().set({
                 gameState: this.gameState,
                 angle: 0,
@@ -208,27 +218,6 @@
                 this.arrow.animations.add('point');
                 this.arrow.animations.play('point', 60, true);
             },
-            win: function () {
-                var tankIndex;
-                for (var i = 0; i < this.tankX.length; i++) {
-                    if (this.tankX[i] !== -1) {
-                        tankIndex = i;
-                    }
-                }
-                this.parent[tankIndex].scale.setTo(2, 2);
-                this.parent[tankIndex].x = 480;
-                this.parent[tankIndex].y = 250;
-                this.camera.follow(this.parent[tankIndex]);
-                this.targets.kill();
-                this.arrow.kill();
-                this.powerBar[tankIndex].kill();
-                this.crown = game.add.sprite(this.parent[tankIndex].x - 20, this.parent[tankIndex].y - 70, 'crown');
-                this.crown.animations.add('bling');
-                this.crown.animations.play('bling', 60, true);
-                this.winnerGif = game.add.sprite(this.parent[tankIndex].x - 30, this.parent[tankIndex].y - 100, 'winner');
-                this.winnerGif.animations.add('winner');
-                this.winnerGif.animations.play('winner', 5, true);
-            },
             createPlayer: function (x, y, i) {
                 this.parent[i] = this.add.sprite(x, y, '');
 
@@ -345,7 +334,29 @@
                 }
 
             },
-
+            win: function () {
+                var tankIndex;
+                for (var i = 0; i < this.tankX.length; i++) {
+                    if (this.tankX[i] !== -1) {
+                        tankIndex = i;
+                    }
+                }
+                this.turret[tankIndex].angle = -20;
+                this.tank[tankIndex].scale.x = 1;
+                this.parent[tankIndex].scale.setTo(2, 2);
+                this.parent[tankIndex].x = 480;
+                this.parent[tankIndex].y = 250;
+                this.camera.follow(this.parent[tankIndex]);
+                this.targets.kill();
+                this.arrow.kill();
+                this.powerBar[tankIndex].kill();
+                this.crown = game.add.sprite(this.parent[tankIndex].x - 20, this.parent[tankIndex].y - 70, 'crown');
+                this.crown.animations.add('bling');
+                this.crown.animations.play('bling', 60, true);
+                this.winnerGif = game.add.sprite(this.parent[tankIndex].x - 30, this.parent[tankIndex].y - 100, 'winner');
+                this.winnerGif.animations.add('winner');
+                this.winnerGif.animations.play('winner', 5, true);
+            },
             /**
              * Removes the bullet, stops the camera following and tweens the camera back to the tank.
              * Have put this into its own method as it's called from several places.
