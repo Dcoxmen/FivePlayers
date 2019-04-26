@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 import { clearCurrentProfile } from "../../actions/profileActions";
-import intro from "../../sound/intro.mp3";
 
 class Navbar extends Component {
   onLogoutClick(e) {
@@ -17,6 +16,17 @@ class Navbar extends Component {
     const { isAuthenticated, user } = this.props.auth;
     const authLinks = (
       <ul className="navbar-nav ml-auto">
+        <li className="nav-item">
+          <a className="nav-link" href="/game.html" target="_blank">
+            Start Game
+          </a>
+        </li>
+        <li className="nav-item">
+          <Link to="/game" className="nav-link">
+            Activate Controller
+          </Link>
+        </li>
+
         <li className="nav-item">
           <Link className="nav-link" to="/dashboard">
             Dashboard
@@ -63,7 +73,6 @@ class Navbar extends Component {
             <Link className="navbar-brand" to="/">
               MERN FURY
             </Link>
-            <audio src={intro} autoPlay loop />
             <button
               className="navbar-toggler"
               type="button"

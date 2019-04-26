@@ -33,14 +33,15 @@ class Experience extends Component {
       </tr>
     ));
     return (
-      <div>
-        <h4 className="mb-4">Game Making Credentials</h4>
+      <div className="bk-image">
+        <h4 className="landing-inner mb-4">Favorite Games Info</h4>
+
         <table className="table">
           <thead>
             <tr>
-              <th>Game Name</th>
-              <th>Position/Title</th>
-              <th>How Long?</th>
+              <th>Fav Game Name</th>
+              <th>Fav Game Character</th>
+              <th>How Long have you been gaming?</th>
               <th />
             </tr>
             {experience}

@@ -68,35 +68,37 @@ class AddExperience extends Component {
               <Link to="/dashboard" className="btn btn-light">
                 Go Back
               </Link>
-              <h1 className="display-4 text-center">Add Experience</h1>
+              <h1 className="display-4 text-center">
+                Add Your Favorite Games and Experience
+              </h1>
               <p className="lead text-center">
-                Add any coding experience that you have had in the past or
-                current
+                Add name and character of your favorite games to let members
+                know what you like.
               </p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
-                  placeholder="* Game Name or Company"
+                  placeholder="* Fav Game Name"
                   name="company"
                   value={this.state.company}
                   onChange={this.onChange}
                   error={errors.company}
                 />
                 <TextFieldGroup
-                  placeholder="* Position or Title"
+                  placeholder="* Fav Game Character"
                   name="title"
                   value={this.state.title}
                   onChange={this.onChange}
                   error={errors.title}
                 />
-                <TextFieldGroup
+                {/* <TextFieldGroup
                   placeholder="Location"
                   name="location"
                   value={this.state.location}
                   onChange={this.onChange}
                   error={errors.location}
-                />
-                <h6>From Date</h6>
+                /> */}
+                <h6>Played From Date</h6>
                 <TextFieldGroup
                   name="from"
                   type="date"
@@ -104,7 +106,7 @@ class AddExperience extends Component {
                   onChange={this.onChange}
                   error={errors.from}
                 />
-                <h6>To Date</h6>
+                <h6>Played To Date</h6>
                 <TextFieldGroup
                   name="to"
                   type="date"
@@ -124,7 +126,7 @@ class AddExperience extends Component {
                     id="current"
                   />
                   <label htmlFor="current" className="form-check-label">
-                    Current Work
+                    I Still Play this Game
                   </label>
                 </div>
                 <TextAreaFieldGroup
@@ -133,7 +135,7 @@ class AddExperience extends Component {
                   value={this.state.description}
                   onChange={this.onChange}
                   error={errors.description}
-                  info="Tell us how you contributed to the game"
+                  info="Tell us why you like this game"
                 />
                 <input
                   type="submit"
