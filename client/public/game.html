@@ -54,14 +54,18 @@
         database.ref().on("value", function (snapshot) {
             if (snapshot.exists()) {
                 // storing the snapshot.val() in a variable for convenience
-                if (snapshot.val().gameState > 10) {
-                    players = snapshot.val().gameState - 10;
-                } else if (snapshot.val().gameState === -1) {
-                    game.state.add('Game', PhaserGame, true);
-                }
+                players = snapshot.val().gameState;
                 userAngle = snapshot.val().angle;
                 userPower = snapshot.val().power;
                 userInput = snapshot.val().direction;
+
+                if (players === -1) {
+                    game.state.add('Game', PhaserGame, true);
+                }
+                //  else if (players > 9) {
+                //     alert("Game has been already created!");
+                //     window.location.replace("/");
+                // }
             };
 
             // output.html("Player : " + (snapshot.val().gameState + 1));
@@ -507,7 +511,6 @@
                 }
             }
         };
-        game.state.add('Game', PhaserGame, true);
     </script>
 
 </body>

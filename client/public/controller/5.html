@@ -54,7 +54,7 @@
             // Create a variable to reference the database.
             var database = firebase.database();
 
-            var gameState = -1;
+            var gameState;
             var fireBtn = 0;
             var angleBtn = 0;
             var userAngle = 0;
@@ -88,13 +88,13 @@
                     direction: d
                 });
 
-                output.html("Player : " + (gameState + 1));
-                output.append("<br>Angle : " + userAngle);
-                output.append("<br>Camera : " + userInput);
-                output.append("<br>Fire : " + userPower);
-                // output.append("<br><br>alpha : " + alpha);
-                output.append("<br>beta : " + Math.floor(beta));
-                // output.append("<br>gamma : " + gamma);
+                // output.html("Player : " + (gameState + 1));
+                // output.append("<br>Angle : " + userAngle);
+                // output.append("<br>Camera : " + userInput);
+                // output.append("<br>Fire : " + userPower);
+                // // output.append("<br><br>alpha : " + alpha);
+                // output.append("<br>beta : " + Math.floor(beta));
+                // // output.append("<br>gamma : " + gamma);
             }
 
             var output = $("#output");
