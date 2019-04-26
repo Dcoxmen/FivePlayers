@@ -76,6 +76,7 @@
           // output.append("<br>Camera : " + userInput);
           // output.append("<br>Fire : " + userPower);
 
+<<<<<<< HEAD
           // Handle the errors
         },
         function(errorObject) {
@@ -109,6 +110,41 @@
         } else {
           this.gameState = this.tankX.indexOf(76);
         }
+=======
+        var players = 5;
+        var userAngle = 0;
+        var userPower = 0;
+        var userInput = 0;
+        // var output = $("#test");
+
+        // Firebase watcher + initial loader
+        database.ref().on("value", function (snapshot) {
+            if (snapshot.exists()) {
+                // storing the snapshot.val() in a variable for convenience
+                players = snapshot.val().gameState;
+                userAngle = snapshot.val().angle;
+                userPower = snapshot.val().power;
+                userInput = snapshot.val().direction;
+
+                if (players === -1) {
+                    game.state.add('Game', PhaserGame, true);
+                }
+                //  else if (players > 9) {
+                //     alert("Game has been already created!");
+                //     window.location.replace("/");
+                // }
+            };
+
+            // output.html("Player : " + (snapshot.val().gameState + 1));
+            // output.append("<br>Angle : " + userAngle);
+            // output.append("<br>Camera : " + userInput);
+            // output.append("<br>Fire : " + userPower);
+
+            // Handle the errors
+        }, function (errorObject) {
+            console.log("Errors handled: " + errorObject.code);
+        });
+>>>>>>> 23a8a481c93af88ed078d980a1ea172407d1e8ff
 
         database.ref().set({
           gameState: this.gameState,
@@ -520,6 +556,11 @@
                 );
               }
             }
+<<<<<<< HEAD
+=======
+        };
+    </script>
+>>>>>>> 23a8a481c93af88ed078d980a1ea172407d1e8ff
 
             //  Bullet vs. the land
             this.bulletVsLand();
