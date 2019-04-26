@@ -6,58 +6,57 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Waiting...</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 </head>
 
 <body style="background-color: black">
 
-    <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
     <script>
         $(document).ready(function () {
             // Initialize Firebase
             var config = {
-                apiKey: "AIzaSyDzNlpU2OUE2GO72b4x2KxefXwMX6H_Dek",
-                authDomain: "asign-controller.firebaseapp.com",
-                databaseURL: "https://asign-controller.firebaseio.com",
-                projectId: "asign-controller",
-                storageBucket: "asign-controller.appspot.com",
-                messagingSenderId: "445299499025"
+                apiKey: "AIzaSyA5CFv7t0pEufxGHpBMdo5g25qaiXU9JdQ",
+                authDomain: "mern-fury.firebaseapp.com",
+                databaseURL: "https://mern-fury.firebaseio.com",
+                projectId: "mern-fury",
+                storageBucket: "mern-fury.appspot.com",
+                messagingSenderId: "129302449232"
             };
             firebase.initializeApp(config);
 
             // Create a variable to reference the database.
             var database = firebase.database();
-            
-            var players = 0;
 
             // Firebase watcher + initial loader
             database.ref().on("value", function (snapshot) {
                 if (snapshot.exists()) {
                     // storing the snapshot.val() in a variable for convenience
-                    players = snapshot.val().players;
+                    var players = snapshot.val().gameState;
                 };
-
-                if (players > 4) {
-                    alert("It's full! Cannot join the game!");
-                    window.location.replace("/");
-                } else {
-                    database.ref().set({
-                        players: ++players
-                    });
-                    window.location.replace("./controller/" + players + ".html");
-                }
+                asignController(players);
 
                 // Handle the errors
             }, function (errorObject) {
                 console.log("Errors handled: " + errorObject.code);
             });
 
-            function update() {
-                database.ref().set({
-                    players: players
-                });
+            function asignController(players) {
+                console.log(players);
+                if (players < 10) {
+                    alert("Game already started. Please wait for next game!");
+                    window.location.replace("/");
+                } else if (players > 14) {
+                    alert("Game is full. Please wait for next game!");
+                    window.location.replace("/");
+                } else {
+                    window.location.replace("./controller/" + (players - 9) + ".html");
+                }
             };
         });
     </script>

@@ -72,6 +72,9 @@
                     userInput = snapshot.val().direction;
                     userPower = snapshot.val().power;
                 };
+                if (gameState === userNo + 9) {
+                    update(-1, 0, 0, 0);
+                } 
                 // Handle the errors
             }, function (errorObject) {
                 console.log("Errors handled: " + errorObject.code);
