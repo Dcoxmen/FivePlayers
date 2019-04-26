@@ -8,9 +8,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="./controller/style.css">
 </head>
 
 <body style="background-color: black">
+    <center>
+        <div class="controller">
+            <button id="angleLeft" class="btn-floating btn-large waves-effect waves-light black">
+                <i class="material-icons">undo</i></button>
+            <button id="angleRight" class="btn-floating btn-large waves-effect waves-light black">
+                <i class="material-icons">redo</i></button>
+            <button id="cameraLeft" class="btn-large waves-effect waves-light grey darken-1">
+                <i class="material-icons">fast_rewind</i></button>
+            <button id="cameraRight" class="btn-large waves-effect waves-light grey darken-1">
+                <i class="material-icons">fast_forward</i></button>
+            <button id="fireButton" class="btn-floating btn-large waves-effect waves-light black">
+                <i class="material-icons fireIcon" style="font-size: 50px; margin: 25px 0 0 1px;">flash_on</i></button>
+            <div id="output"></div>
+        </div>
+
+        <!-- Modal Structure -->
+        <div id="modal1" class="modal">
+            <div class="modal-content center amber lighten-4">
+                THE GAME HAS BEEN STARTED<br>
+                OR DOES NOT EXIST...
+            </div>
+        </div>
+    </center>
 
     <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -46,14 +70,17 @@
                 console.log("Errors handled: " + errorObject.code);
             });
 
+            $('.modal').modal({
+                endingTop: '40%',
+                onCloseEnd: function () { // Callback for Modal close
+                    window.location.replace("/");
+                }
+            });
+
             function asignController(players) {
                 console.log(players);
-                if (players < 10) {
-                    alert("Game already started. Please wait for next game!");
-                    window.location.replace("/");
-                } else if (players > 14) {
-                    alert("Game is full. Please wait for next game!");
-                    window.location.replace("/");
+                if (players < 10 || players > 14) {
+                    $("#modal1").modal("open");
                 } else {
                     window.location.replace("./controller/" + (players - 9) + ".html");
                 }
