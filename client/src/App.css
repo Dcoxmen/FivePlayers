@@ -73,6 +73,9 @@ img {
 .card-body {
   opacity: 0.9;
 }
+.bg-light {
+  background-color: #f6fcfb !important;
+}
 .latest-profiles-img {
   width: 40px;
   height: 40px;
