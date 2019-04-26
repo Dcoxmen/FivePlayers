@@ -1,5 +1,4 @@
 module.exports = {
-  mongoURI:
-    "mongodb+srv://Cox:DrC3mngodb@cluster5player-je85s.mongodb.net/test?retryWrites=true",
+  mongoURI: "mongodb://localhost/scraper_news",
   secretOrKey: "secret"
 };
