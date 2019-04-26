@@ -28,6 +28,7 @@ img {
   height: 89vh;
   margin-top: -24px;
   margin-bottom: -57px;
+  text-align: center;
 }
 .bk-image {
   margin-bottom: 30px;
@@ -36,6 +37,18 @@ img {
   background-size: cover;
   background-position: center;
   /* height: 50vh; */
+}
+
+.wrapper {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.title {
+  width: 338px !important;
+  height: 209px !important;
 }
 
 .landing-inner {

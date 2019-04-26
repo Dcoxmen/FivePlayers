@@ -71,6 +71,9 @@
                     userInput = snapshot.val().direction;
                     userPower = snapshot.val().power;
                 };
+                if (gameState === userNo + 9) {
+                    update(gameState+1, 0, 0, 0);
+                } 
                 // Handle the errors
             }, function (errorObject) {
                 console.log("Errors handled: " + errorObject.code);
@@ -84,12 +87,12 @@
                     direction: d
                 });
 
-                output.html("Player : " + (gameState + 1));
-                output.append("<br>Angle : " + userAngle);
-                output.append("<br>Camera : " + userInput);
-                output.append("<br>Fire : " + userPower);
+                // output.html("Player : " + (gameState + 1));
+                // output.append("<br>Angle : " + userAngle);
+                // output.append("<br>Camera : " + userInput);
+                // output.append("<br>Fire : " + userPower);
                 // output.append("<br><br>alpha : " + alpha);
-                output.append("<br>beta : " + Math.floor(beta));
+                // output.append("<br>beta : " + Math.floor(beta));
                 // output.append("<br>gamma : " + gamma);
             }
 
