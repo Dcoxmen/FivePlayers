@@ -1,4 +1,5 @@
 module.exports = {
-    mongoURI: "mongodb://localhost/gms_db",
-    secretOrKey: "secret"
+  mongoURI:
+    "mongodb+srv://Cox:DrC$3mngodb@cluster5player-je85s.mongodb.net/test?retryWrites=true",
+  secretOrKey: "secret"
 };
