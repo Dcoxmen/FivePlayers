@@ -51,13 +51,11 @@ class Register extends Component {
 
     return (
       <div className="register">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-8 m-auto">
-              <div className="wrapper">
-                <h1 className="display-4 text-center">Sign Up</h1>
-                <p className="lead text-center">
-                  Create your MERN FURY account
+        <div className="wrapper col-lg-5">
+          <h1 className="display-4 text-center">Sign Up</h1>
+          <p className="lead text-center">
+            Create your MERN FURY account
+
                 </p>
 
                 <form noValidate onSubmit={this.onSubmit}>

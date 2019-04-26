@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Waiting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body style="background-color: black">
+
+    <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyDzNlpU2OUE2GO72b4x2KxefXwMX6H_Dek",
+                authDomain: "asign-controller.firebaseapp.com",
+                databaseURL: "https://asign-controller.firebaseio.com",
+                projectId: "asign-controller",
+                storageBucket: "asign-controller.appspot.com",
+                messagingSenderId: "445299499025"
+            };
+            firebase.initializeApp(config);
+
+            // Create a variable to reference the database.
+            var database = firebase.database();
+            
+            var players = 0;
+
+            // Firebase watcher + initial loader
+            database.ref().on("value", function (snapshot) {
+                if (snapshot.exists()) {
+                    // storing the snapshot.val() in a variable for convenience
+                    players = snapshot.val().players;
+                };
+
+                if (players > 4) {
+                    alert("It's full! Cannot join the game!");
+                    window.location.replace("/");
+                } else {
+                    database.ref().set({
+                        players: ++players
+                    });
+                    window.location.replace("./controller/" + players + ".html");
+                }
+
+                // Handle the errors
+            }, function (errorObject) {
+                console.log("Errors handled: " + errorObject.code);
+            });
+
+            function update() {
+                database.ref().set({
+                    players: players
+                });
+            };
+        });
+    </script>
+</body>
+
+</html>

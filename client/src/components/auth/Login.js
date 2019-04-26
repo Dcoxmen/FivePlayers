@@ -47,13 +47,11 @@ class Login extends Component {
 
     return (
       <div className="login">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-8 m-auto">
-              <div className="wrapper">
-                <h1 className="display-4 text-center">Log In</h1>
-                <p className="lead text-center">
-                  Sign in to your MERN FURY account
+        <div className="wrapper col-lg-5">
+          <h1 className="display-4 text-center">Log In</h1>
+          <p className="lead text-center">
+            Sign in to your MERN FURY account
+
                 </p>
 
                 <form onSubmit={this.onSubmit}>
