@@ -47,7 +47,7 @@ class Login extends Component {
 
     return (
       <div className="login">
-        <div className="wrapper">
+        <div className="wrapper col-lg-5">
           <h1 className="display-4 text-center">Log In</h1>
           <p className="lead text-center">
             Sign in to your MERN FURY account

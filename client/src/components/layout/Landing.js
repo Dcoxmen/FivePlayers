@@ -18,11 +18,11 @@ class Landing extends Component {
           <hr />
           <Link
             to="/register"
-            className="btn1 btn btn-lg btn-warning mr-2"
+            className="btn1 btn btn-lg btn-warning mr-3"
           >
             Sign Up
                   </Link>
-          <Link to="/login" className="btn2 btn btn-lg btn-primary">
+          <Link to="/login" className="btn2 btn btn-lg btn-primary ml-3">
             Login
                   </Link>
         </div>
