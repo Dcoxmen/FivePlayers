@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
+import picTitle from "../../img/title.png";
 
 class Landing extends Component {
   componentDidMount() {
@@ -24,7 +25,12 @@ class Landing extends Component {
                   </Link>
           <Link to="/login" className="btn2 btn btn-lg btn-primary ml-3">
             Login
+
                   </Link>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
