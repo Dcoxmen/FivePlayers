@@ -121,11 +121,11 @@ class CreateProfile extends Component {
 
     // Select options for status
     const options = [
-      { label: "* Select Professional Status", value: 0 },
-      { label: "Developer", value: "Developer" },
-      { label: "Junior Developer", value: "Junior Developer" },
-      { label: "Senior Developer", value: "Senior Developer" },
-      { label: "Game Developer", value: "Game Developer" },
+      { label: "* Select Current Status", value: 0 },
+      { label: "Game 24-7", value: "Game 24-7" },
+      { label: "Make my Own Games", value: "Game Maker" },
+      { label: "Student of Game Development", value: "Student Game Developer" },
+      { label: "Professional Developer", value: "Pro Game Developer" },
       { label: "Student or Learning", value: "Student or Learning" },
       { label: "Instructor or Teacher", value: "Instructor or Teacher" },
       { label: "Intern", value: "Intern" },
@@ -158,15 +158,15 @@ class CreateProfile extends Component {
                     onChange={this.onChange}
                     options={options}
                     error={errors.status}
-                    info="Give us an idea of where you are at in your career"
+                    info="Give us an idea of where you are at in life"
                   />
                   <TextFieldGroup
-                    placeholder="Company"
+                    placeholder="Enter Game or Company"
                     name="company"
                     value={this.state.company}
                     onChange={this.onChange}
                     error={errors.company}
-                    info="Could be your own company or one you work for"
+                    info="Could be your own game/company or one you play"
                   />
                   <TextFieldGroup
                     placeholder="Website"
@@ -174,7 +174,7 @@ class CreateProfile extends Component {
                     value={this.state.website}
                     onChange={this.onChange}
                     error={errors.website}
-                    info="Could be your own website or a company one"
+                    info="Could be your own website or favorite game site"
                   />
                   <TextFieldGroup
                     placeholder="Location"
@@ -191,16 +191,16 @@ class CreateProfile extends Component {
                     onChange={this.onChange}
                     error={errors.skills}
                     info="Please use comma separated values (eg.
-                    HTML,CSS,JavaScript,PHP"
+                    Cheat Codes, Over Watch, Hover Boards "
                   />
-                  <TextFieldGroup
+                  {/* <TextFieldGroup
                     placeholder="Github Username"
                     name="githubusername"
                     value={this.state.githubusername}
                     onChange={this.onChange}
                     error={errors.githubusername}
                     info="If you want your latest repos and a Github link, include your username"
-                  />
+                  /> */}
                   <TextAreaFieldGroup
                     placeholder="Short Bio"
                     name="bio"

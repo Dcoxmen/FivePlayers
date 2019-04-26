@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+/*This is the admin navigation interface in the user  dashboard. This is where user can access CRUD features. Additional components can be easily added.*/
 const ProfileActions = () => {
   return (
     <div className="btn-group mb-4" role="group">
@@ -9,16 +9,15 @@ const ProfileActions = () => {
       </Link>
       <Link to="/add-experience" className="btn btn-light">
         <i className="fab fa-black-tie text-info mr-1" />
-        Add Experience
+        Add favorite Games
       </Link>
-      <Link to="/game" className="btn btn-light">
-        <i className="fa fa-desktop text-info mr-1" />
-        Create Game
-      </Link>
-      <Link to="/controller" className="btn btn-light">
-      <i className="fa fa-gamepad text-info mr-1" />
-        Controller
-      </Link>
+      {/* <a class="btn btn-light" href="/game.html">
+        Game Link
+      </a> */}
+      {/* <Link to="/game" className="btn btn-light">
+        <i className="fa fa-gamepad text-info mr-1" />
+        Play Game
+      </Link> */}
     </div>
   );
 };

@@ -1,11 +1,7 @@
 img {
   width: 100%;
 }
-/* .App {
-  background: url("./img/tankBG.jpg") no-repeat;
-  background-size: cover;
-  background-position: center;
-} */
+
 .container {
   max-width: 100%;
   margin: 0;
@@ -14,40 +10,37 @@ img {
 
 .wrapper,
 .display-4,
-.lead
-/* .loginsubmit  */
-{
+.lead,
+.loginsubmit {
+  padding-left: 10px;
   font-weight: bolder;
-  color: rgb(43, 43, 43);
+  color: rgb(27, 26, 26);
 }
 .landing,
 .login,
 .register {
+  overflow: hidden;
+  padding: 0;
   max-width: 100%;
   background: url("./img/battletank.jpg") no-repeat;
   background-size: cover;
   background-position: center;
-  height: 88vh;
+  height: 89vh;
   margin-top: -24px;
   margin-bottom: -57px;
-  text-align: center;
 }
-
-.wrapper {
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.bk-image {
+  margin-bottom: 30px;
+  padding: 0;
+  background: url("./img/bg-gradient.png") no-repeat;
+  background-size: cover;
+  background-position: center;
+  /* height: 50vh; */
 }
-
-.title {
-    width: 338px !important;
-    height: 209px !important;
-  }
-
 
 .landing-inner {
-  padding-top: 80px;
+  padding-top: 60px;
+  padding-left: 10px;
 }
 
 /* .dark-overlay {
@@ -62,7 +55,9 @@ img {
 .card-form {
   opacity: 0.9;
 }
-
+.card-body {
+  opacity: 0.9;
+}
 .latest-profiles-img {
   width: 40px;
   height: 40px;
@@ -72,11 +67,8 @@ img {
   color: #bbb !important;
 }
 .merntitle {
-  color: rgb(175, 39, 39);
-  font-family: "impact", "sans-serif";
+  width: 30%;
   text-align: center;
-  font-size: 500%;
-  padding-top: 5%;
 }
 .wrapper {
   margin-top: 2%;
@@ -87,11 +79,13 @@ img {
 
 .registersubmit,
 .loginsubmit {
-  /* margin-left: 42%; */
+  font-size: 32px;
   padding: 2% 2% 2% 2%;
-  /* background-color: rgb(21, 224, 180);
+  background-color: rgb(21, 224, 180);
   border: rgb(197, 255, 243);
-  color: black; */
+}
+.dBtn {
+  padding-left: 10px;
 }
 
 /* .btn1 {
@@ -103,7 +97,10 @@ img {
   background-color: rgb(21, 224, 180);
   border: rgb(197, 255, 243);
 } */
-
+.btn-light {
+  background-color: rgb(21, 224, 180);
+  border: rgb(197, 255, 243);
+}
 .tank-img {
   width: 220px;
   margin-top: 150px;
@@ -120,4 +117,28 @@ img {
 }
 .bg-info {
   background-color: rgb(21, 224, 180);
+}
+.dashpic {
+  display: flex;
+  width: auto;
+  height: 320px;
+  background-color: rgb(7, 7, 7);
+}
+.expdash {
+  margin-top: 60px;
+  height: auto;
+}
+.dashicon {
+  margin-top: 20px;
+  text-align: center;
+}
+.dashbk {
+  background: url("./img/scorebrd-sample.png") no-repeat;
+  border: solid rgb(23, 162, 184);
+  border-width: 0px 0px 0px 5px;
+}
+.dashbk2 {
+  background: url("./img/smalltnk2.png") no-repeat;
+  border: solid rgb(23, 162, 184);
+  border-width: 0px 0px 0px 5px;
 }

@@ -1,0 +1,20 @@
+.player1 {
+  margin-top: 40px;
+  background: url("./PlayerOne/PlayerOne.png") no-repeat;
+}
+.player2 {
+  margin-top: 40px;
+  background: url("./PlayerTwo/PlayerTwo.png") no-repeat;
+}
+.player3 {
+  margin-top: 40px;
+  background: url("./PlayerThree/PlayerThree.png") no-repeat;
+}
+.player4 {
+  margin-top: 40px;
+  background: url("./PlayerFour/PlayerFour.png") no-repeat;
+}
+.player5 {
+  margin-top: 40px;
+  background: url("./PlayerFive/PlayerFive.png") no-repeat;
+}
