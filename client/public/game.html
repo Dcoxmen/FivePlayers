@@ -13,12 +13,23 @@
     <div id="loading"></div>
     <div id="game"></div>
 
+    <audio id="openingMusic" autoplay loop>
+        <source src="./assets/sound/loading.mp3">
+    </audio>
+    <audio id="joinedSound">
+        <source src="./assets/sound/joined.mp3">
+    </audio>
+
     <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/phaser-ce@2.12.0"></script>
     <script src="./assets/javascript/HealthBar.standalone.js"></script>
     <script type="text/javascript">
+        // Initialize sounds
+        var openingMusic = document.getElementById("openingMusic");
+        var joinedSound = document.getElementById("joinedSound");
+
         // Initialize Firebase
         var config = {
             apiKey: "AIzaSyA5CFv7t0pEufxGHpBMdo5g25qaiXU9JdQ",
@@ -101,13 +112,15 @@
                 //     startBtn.text("GAME IS STARTING").removeClass("btn-warning").addClass("btn-danger");
                 //     setTimeout(gameStart(players), 2000);
                 // } else {
-                    startBtn.text("START THE GAME").removeClass("btn-warning").addClass("btn-primary");
+                startBtn.text("START THE GAME").removeClass("btn-warning").addClass("btn-primary");
                 // }
             }
+            joinedSound.play();
         }
 
         // Game
         function gameStart(players) {
+            openingMusic.pause();
             loading.hide();
 
             var game = new Phaser.Game(960, 480, Phaser.CANVAS, 'game');
