@@ -18,7 +18,7 @@
 > is all connected and powered from a google firebase database using device orientation sensors to use a smartphone as an optional controller.
 > Some challenges in developing the game included resolving land and vehicle destruction issues, controller syncronization and state sequence.
 
-> Here is link to demo of working app: https://quiet-refuge-58696.herokuapp.com/login
+> Here is link to demo of working app: https://cryptic-temple-22180.herokuapp.com/
 
 > The game is the main feature of the application and the most challenging to build. After some research and testing we decided to build the game from scratch using the phaser javascript gaming engine utilizing many of it's built in feautes:
 
