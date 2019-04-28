@@ -103,7 +103,7 @@ npm run client
 > react-router-dom,
 > redux,
 > redux-thunk
-
+> Phaser
 > Helpful chrome extensions:
 
 > React Dev Tools,
