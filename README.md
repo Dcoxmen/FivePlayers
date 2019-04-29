@@ -109,7 +109,7 @@ npm run client
 > React Dev Tools,
 > Redux Dev Tools
 
-## App Information
+## Game State Information
 
 > Below demonstrates how :
 
