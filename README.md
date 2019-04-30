@@ -81,32 +81,32 @@ npm run client
 > Packages included in this project:
 
 > Node.js
-
-> express,
-> mongoose,
-> body-parser,
-> bycryptjs,
-> concurrently,
-> gravatar,
-> jsonwebtoken,
-> passport,
-> passport-jwt,
-> validator,
+> express
+> mongoose
+> body-parser
+> bycryptjs
+> concurrently
+> gravatar
+> jsonwebtoken
+> passport
+> passport-jwt
+> validator
 > nodemon
 
 > React-client:
 
-> axios,
-> classnames,
-> jwt-decode,
-> react-redux,
-> react-router-dom,
-> redux,
-> redux-thunk.
->
-> Helpful chrome extensions:
->
-> React Dev Tools,
+> axios
+> classnames
+> jwt-decode
+> react-redux
+> react-router-dom
+> redux
+> redux-thunk
+> Phaser
+
+## Helpful Chrome Extensions:
+
+> React Dev Tools
 > Redux Dev Tools
 
 ## Game State Information
