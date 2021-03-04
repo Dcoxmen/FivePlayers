@@ -13,7 +13,20 @@
 > Designed database models using MongoDB and Mongoose then user api routes and authentication were built and tested with Postman.
 > The Frontend was made with react and bootstrap. React Router and Redux with Reducers were used to manage states and authentication.
 > MVC concepts applied.
->
+> 
+> ## Technology
+> MongoDB
+
+>JWT Auth 
+
+>Express
+
+>React JS
+
+>Redux
+
+>Phaser JS
+
 > The game was made with phaser technology utilizing it's built in Arcade physics engine and WebGL with Canvas to create fast rendering. This is
 > is all connected and powered from a google firebase database using device orientation sensors to use a smartphone as an optional controller.
 > Some challenges in developing the game included resolving land and vehicle destruction issues, controller syncronization and state sequence.
