@@ -27,6 +27,10 @@
 
 >Phaser JS
 
+>Firebase
+
+>WebGL with Canvas
+
 > The game was made with phaser technology utilizing it's built in Arcade physics engine and WebGL with Canvas to create fast rendering. This is
 > is all connected and powered from a google firebase database using device orientation sensors to use a smartphone as an optional controller.
 > Some challenges in developing the game included resolving land and vehicle destruction issues, controller syncronization and state sequence.
